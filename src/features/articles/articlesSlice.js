@@ -39,6 +39,11 @@ export const articlesSlice = createSlice({
 });
 
 export default articlesSlice.reducer;
+
+export const allArticles = (state) => state.articles.articlesList;
+export const selectIsLoading = (state) => state.articles.isLoading; 
+// you can also export the error but it depends if you want to display it in UI
+
 /*What’s happening:
 You write:
 initial state
@@ -64,4 +69,19 @@ Slice state (inside reducer)
 → contains only that slice’s data (articlesList, isLoading, error)
 
 👉 In components (useSelector) → use full state (state.articles...)
-👉 In slice reducers → use slice state directly (state...)*/
+👉 In slice reducers → use slice state directly (state...)
+
+
+
+Selector functions usually use the naming convention:
+
+selectThing
+or:
+
+selectThingById
+selectAllThings
+selectThingStatus
+
+
+
+*/
