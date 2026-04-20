@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 //“Fetch on page load” usually means “dispatch the fetch in useEffect when the page mounts,” not “call fetch directly inside render.”
 
 
-const HomePage = ()=> {
+const  HomePage = ()=> {
 const dispatch = useDispatch();
 const loadedArticles = useSelector(allArticles);
 const isLoadingArticles = useSelector(selectIsLoading);
@@ -14,8 +14,30 @@ useEffect(() => {
 dispatch(loadArticles())
 },[dispatch])
 
+if (isLoadingArticles) {
+    return <div>Is Loading</div>
 }
 
+if (!Array.isArray(loadedArticles) || loadedArticles.length === 0) {
+return <div>No results</div>
+}
+
+return (
+<>
+<div>
+    {loadedArticles.map(article => (
+     <div key={article.id}>
+        {article.title}
+        </div>   
+    ))}
+</div>
+</>
+
+)
+
+}
+
+export default HomePage;
 
 
 /* So you build in this order:
