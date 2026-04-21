@@ -3,10 +3,12 @@ import { configureStore } from "@reduxjs/toolkit";
 import articlesReducer from "../features/articles/articlesSlice";
 
 
-export default configureStore({
+const store = configureStore({
   reducer: {
     articles: articlesReducer
 
 
   },
 });
+
+export default store;
