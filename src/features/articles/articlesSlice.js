@@ -6,6 +6,7 @@ export const loadArticles = createAsyncThunk(
   async () => {
     const data = await fetch('https://dev.to/api/articles');
     const json = await data.json();
+    console.log(json); // REMOVE
     return json;
   }
 );
