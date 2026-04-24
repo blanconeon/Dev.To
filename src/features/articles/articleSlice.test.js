@@ -91,8 +91,70 @@ const isLoadingArticles = selectIsLoading(fakeState);
 
 expect(loadedArticles).toEqual(fakeState.articles.articlesList);
 expect(isLoadingArticles).toBe(false);
-
+// useSelectors is for react components
 })
 
-// useSelectors is for React components
+it('loadArticles fetches articles from the API', async () => {
+    const fakeArticles = [
+      { type_of: 'article', id: 1, title: 'Test One' },
+      { type_of: 'article', id: 2, title: 'Test Two' },
+    ];
+
+    global.fetch = vi.fn(() =>
+      Promise.resolve({
+        json: () => Promise.resolve(fakeArticles),
+      })
+    );
+
+    const dispatch = vi.fn();
+    const getState = vi.fn();
+
+    const result = await loadArticles()(dispatch, getState, undefined);
+
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith('https://dev.to/api/articles');
+    expect(result.payload).toEqual(fakeArticles);
+    expect(result.type).toBe('articles/loadArticles/fulfilled');
+  });
+
 });
+
+/*1fakeArticles
+You create pretend API data.
+
+2global.fetch = vi.fn(...)
+You replace real fetch with a fake function.
+
+3Promise.resolve({ json: ... })
+Your fake fetch pretends it returned a successful response object.
+
+4json: () => Promise.resolve(fakeArticles)
+When the thunk does await data.json(), it gets your fake articles.
+
+5const dispatch = vi.fn()
+Fake Redux dispatch function.
+
+6const getState = vi.fn()
+Fake Redux getState function.
+
+7await loadArticles()(dispatch, getState, undefined)
+First loadArticles() creates the thunk action.
+Then (dispatch, getState, undefined) runs that thunk manually.
+
+8result
+This is the final action object returned by the thunk after success.
+
+9expect(fetch).toHaveBeenCalledTimes(1)
+Checks that the thunk actually called fetch once.
+
+10expect(fetch).toHaveBeenCalledWith(...)
+Checks it called the correct URL.
+
+11expect(result.payload).toEqual(fakeArticles)
+Checks the thunk returned your fake data as payload.
+
+12expect(result.type).toBe(...)
+Checks the thunk finished as fulfilled, not rejected.
+
+That’s the core idea:
+you fake the network, run the thunk, and verify the thunk behaves like a successful API call.*/
