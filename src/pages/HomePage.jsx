@@ -28,6 +28,7 @@ return (
     {loadedArticles.map(article => (
      <div key={article.id}>
         {article.title}
+        {article.description}
         </div>   
     ))}
 </div>
