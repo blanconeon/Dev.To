@@ -1,6 +1,7 @@
 import { loadArticles, selectIsLoading, allArticles } from "../features/articles/articlesSlice";
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useSearchParams } from "react-router-dom";
 //“Fetch on page load” usually means “dispatch the fetch in useEffect when the page mounts,” not “call fetch directly inside render.”
 
 
@@ -21,6 +22,11 @@ if (isLoadingArticles) {
 if (!Array.isArray(loadedArticles) || loadedArticles.length === 0) {
 return <div>No results</div>
 }
+
+
+const [searchParams] = useSearchParams(); //array destructuring is by position not by name 
+searchParams.get('tag');
+
 
 return (
 <>

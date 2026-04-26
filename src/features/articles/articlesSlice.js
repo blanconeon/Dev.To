@@ -11,6 +11,17 @@ export const loadArticles = createAsyncThunk(
   }
 );
 
+export const loadArticlesByTag = createAsyncThunk(
+  'articles/loadArticlesByTag', //articles=from slice name: and loadArticles thunk name
+  async (tagName) => {
+    const data = await fetch(`https://dev.to/api/articles?tag=${tagName}`);
+    const json = await data.json();
+    console.log(json); // REMOVE
+    return json;
+  }
+);
+
+
 
 
 
@@ -34,8 +45,20 @@ export const articlesSlice = createSlice({
       .addCase(loadArticles.rejected, (state, action) => {
         state.isLoading = false;
         state.error = true;
-        
       })
+      //loadArticlesByTag
+      .addCase(loadArticlesByTag.pending, (state) => {
+     state.isLoading = true;
+     state.error = false;
+    })
+    .addCase(loadArticlesByTag.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.articlesList = action.payload;
+    })
+    .addCase(loadArticlesByTag.rejected, (state) => {
+      state.isLoading = false;
+      state.error = true;
+    })
   },
 });
 
