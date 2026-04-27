@@ -1,4 +1,4 @@
-import { loadArticles, selectIsLoading, allArticles } from "../features/articles/articlesSlice";
+import { loadArticles, selectIsLoading, allArticles, loadArticlesByTag } from "../features/articles/articlesSlice";
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from "react-router-dom";
@@ -10,10 +10,17 @@ const dispatch = useDispatch();
 const loadedArticles = useSelector(allArticles);
 const isLoadingArticles = useSelector(selectIsLoading);
 
-// start UseEffect 
+const [searchParams] = useSearchParams(); //array destructuring is by position not by name 
+const tagName = searchParams.get('tag');
+
+// start UseEffect for articles onload & useEffect for loadArticlesByTag
 useEffect(() => {
+if (tagName) {
+    dispatch(loadArticlesByTag(tagName))
+ } else {
 dispatch(loadArticles())
-},[dispatch])
+ }
+},[dispatch, tagName])
 
 if (isLoadingArticles) {
     return <div>Is Loading</div>
@@ -24,8 +31,6 @@ return <div>No results</div>
 }
 
 
-const [searchParams] = useSearchParams(); //array destructuring is by position not by name 
-searchParams.get('tag');
 
 
 return (
