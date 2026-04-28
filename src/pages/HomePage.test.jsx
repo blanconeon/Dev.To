@@ -13,7 +13,7 @@ vi.mock("react-redux", () => ({
 
 
 describe("homepage component", () => {
-it("does page render title", ()=> {
+it("does page render title and description", ()=> {
 
 const fakeState = {
   articles: {

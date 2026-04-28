@@ -14,6 +14,14 @@ const [searchParams] = useSearchParams(); //array destructuring is by position n
 const tagName = searchParams.get('tag');
 
 // start UseEffect for articles onload & useEffect for loadArticlesByTag
+/*So on first load:
+•	tag is null
+•	normal articles load
+After click:
+•	tag becomes react
+•	tag articles load instead
+That avoids both fetches competing.*/
+
 useEffect(() => {
 if (tagName) {
     dispatch(loadArticlesByTag(tagName))

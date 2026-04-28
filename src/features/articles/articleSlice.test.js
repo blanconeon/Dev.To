@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import articlesReducer, { loadArticles, allArticles, selectIsLoading } from './articlesSlice';
+import articlesReducer, { loadArticles, allArticles, selectIsLoading, loadArticlesByTag } from './articlesSlice';
 
 describe('articlesSlice', () => {
 
@@ -115,6 +115,30 @@ it('loadArticles fetches articles from the API', async () => {
     expect(fetch).toHaveBeenCalledWith('https://dev.to/api/articles');
     expect(result.payload).toEqual(fakeArticles);
     expect(result.type).toBe('articles/loadArticles/fulfilled');
+  });
+
+  it('loadArticlesByTag fetches articles from the API', async () => {
+    const fakeTagArticles = [
+      { type_of: 'tag article', id: 1, title: 'Test tag One' },
+      { type_of: 'tag article', id: 2, title: 'Test tag Two' },
+    ];
+
+    global.fetch = vi.fn(() =>
+      Promise.resolve({
+        json: () => Promise.resolve(fakeTagArticles),
+      })
+    );
+
+    const dispatch = vi.fn();
+    const getState = vi.fn();
+    const tagName = ('react'); // thunk ecpects a string
+
+    const result = await loadArticlesByTag(tagName)(dispatch, getState, undefined);
+
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith(`https://dev.to/api/articles?tag=${tagName}`);
+    expect(result.payload).toEqual(fakeTagArticles);
+    expect(result.type).toBe('articles/loadArticlesByTag/fulfilled');
   });
 
 });
