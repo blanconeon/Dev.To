@@ -3,7 +3,7 @@ import "@testing-library/jest-dom/vitest";
 import HomePage from "./HomePage";
 import { describe, it, expect, vi } from 'vitest';
 import { useSelector, useDispatch } from 'react-redux';
-
+import { MemoryRouter} from 'react-router-dom';
 
 //mocking react-redux useSelector, useDispatch this lives outside the test. 
 vi.mock("react-redux", () => ({
@@ -31,7 +31,8 @@ useDispatch.mockReturnValue(mockDispatch);
 
 // render component
 
-render(<HomePage/>);
+render(<MemoryRouter><HomePage/></MemoryRouter>);
+//HomePage had to be wrapped in a router provider because it uses React Router hooks, and those hooks only work when the component is rendered inside router context.
 
 //assertions
 const testTitle = screen.getByText("Test title");
