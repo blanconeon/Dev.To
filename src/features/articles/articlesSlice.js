@@ -90,6 +90,19 @@ export const articlesSlice = createSlice({
       state.isLoading = false;
       state.error = true;
     })
+    //loadArticlesByAuthor
+    .addCase(loadArticlesByAuthor.pending, (state)=> {
+      state.isLoading = true;
+      state.error = false;
+    })
+    .addCase(loadArticlesByAuthor.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.articlesList = action.payload;
+    })
+    .addCase(loadArticlesByAuthor.rejected, (state) => {
+      state.isLoading = false;
+      state.error = true;
+    })
   },
 });
 
