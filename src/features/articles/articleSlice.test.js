@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import articlesReducer, { loadArticles, allArticles, selectIsLoading, loadArticlesByTag } from './articlesSlice';
+import articlesReducer, { loadArticles, allArticles, selectIsLoading, loadArticlesByTag, loadArticlesByTopNumber } from './articlesSlice';
 
 describe('articlesSlice', () => {
 
@@ -141,6 +141,29 @@ it('loadArticles fetches articles from the API', async () => {
     expect(result.type).toBe('articles/loadArticlesByTag/fulfilled');
   });
 
+it('loadArticlesByTopNumber fetches articles from the API', async () => {
+    const fakeTopArticles = [
+      { type_of: 'top article', id: 1, title: 'Test top One' },
+      { type_of: 'top article', id: 2, title: 'Test top Two' },
+    ];
+
+    global.fetch = vi.fn(() =>
+      Promise.resolve({
+        json: () => Promise.resolve(fakeTopArticles),
+      })
+    );
+
+    const dispatch = vi.fn();
+    const getState = vi.fn();
+    const topNumber = ('7'); // thunk ecpects a string
+
+    const result = await loadArticlesByTopNumber(topNumber)(dispatch, getState, undefined);
+
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith(`https://dev.to/api/articles?top=${topNumber}`);
+    expect(result.payload).toEqual(fakeTopArticles);
+    expect(result.type).toBe('articles/loadArticlesByTopNumber/fulfilled');
+  });
 });
 
 /*1fakeArticles

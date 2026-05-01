@@ -32,8 +32,7 @@ useDispatch.mockReturnValue(mockDispatch);
 // render component
 
 render(<MemoryRouter><HomePage/></MemoryRouter>);
-//HomePage had to be wrapped in a router provider because it uses React Router hooks, and those hooks only work when the component is rendered inside router context.
-
+//In your test, if you're rendering <HomePage /> completely alone — there's no <RouterProvider/> above it. When React tries to run useSearchParams(), it looks up the tree for a Router context, finds nothing, and crashes. MemoryRouter acts as <RouterProvider in the test
 //assertions
 const testTitle = screen.getByText("Test title");
 expect(testTitle).toBeInTheDocument();

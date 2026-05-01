@@ -12,9 +12,19 @@ export const loadArticles = createAsyncThunk(
 );
 
 export const loadArticlesByTag = createAsyncThunk(
-  'articles/loadArticlesByTag', //articles=from slice name: and loadArticles thunk name
+  'articles/loadArticlesByTag', //articles=from slice name: and loadArticlesByTag thunk name
   async (tagName) => {
     const data = await fetch(`https://dev.to/api/articles?tag=${tagName}`);
+    const json = await data.json();
+    console.log(json); // REMOVE
+    return json;
+  }
+);
+
+export const loadArticlesByTopNumber = createAsyncThunk(
+  'articles/loadArticlesByTopNumber', //articles=from slice name: and loadArticlesByTrend thunk name
+  async (topNumber) => {
+    const data = await fetch(`https://dev.to/api/articles?top=${topNumber}`);
     const json = await data.json();
     console.log(json); // REMOVE
     return json;
@@ -56,6 +66,19 @@ export const articlesSlice = createSlice({
       state.articlesList = action.payload;
     })
     .addCase(loadArticlesByTag.rejected, (state) => {
+      state.isLoading = false;
+      state.error = true;
+    })
+    //loadArticlesByTopNumber
+    .addCase(loadArticlesByTopNumber.pending, (state) => {
+      state.isLoading = true;
+      state.error = false;
+    })
+    .addCase(loadArticlesByTopNumber.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.articlesList = action.payload;
+    })
+    .addCase(loadArticlesByTopNumber.rejected, (state) => {
       state.isLoading = false;
       state.error = true;
     })

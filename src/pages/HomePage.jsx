@@ -1,4 +1,4 @@
-import { loadArticles, selectIsLoading, allArticles, loadArticlesByTag } from "../features/articles/articlesSlice";
+import { loadArticles, selectIsLoading, allArticles, loadArticlesByTag, loadArticlesByTopNumber } from "../features/articles/articlesSlice";
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from "react-router-dom";
@@ -12,7 +12,7 @@ const isLoadingArticles = useSelector(selectIsLoading);
 
 const [searchParams] = useSearchParams(); //array destructuring is by position not by name 
 const tagName = searchParams.get('tag');
-
+const topNumber = searchParams.get("top");
 // start UseEffect for articles onload & useEffect for loadArticlesByTag
 /*So on first load:
 •	tag is null
@@ -25,10 +25,12 @@ That avoids both fetches competing.*/
 useEffect(() => {
 if (tagName) {
     dispatch(loadArticlesByTag(tagName))
+ } else if(topNumber) {
+    dispatch(loadArticlesByTopNumber(topNumber))
  } else {
 dispatch(loadArticles())
  }
-},[dispatch, tagName])
+},[dispatch, tagName, topNumber])
 
 if (isLoadingArticles) {
     return <div>Is Loading</div>
