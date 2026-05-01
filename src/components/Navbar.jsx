@@ -1,4 +1,5 @@
 import {NavLink} from "react-router-dom";
+import SearchBar from "./SearchBar.jsx";
 
 
 const NavBar = () => {
@@ -32,6 +33,7 @@ Top 7
 Top 30
 </NavLink>
 </div>
+<SearchBar/>
 </>
 )
 }

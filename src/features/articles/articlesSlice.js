@@ -31,7 +31,15 @@ export const loadArticlesByTopNumber = createAsyncThunk(
   }
 );
 
-
+export const loadArticlesByAuthor = createAsyncThunk(
+  'articles/loadArticlesByAuthor', //articles=from slice name: and loadArticlesByAuthor thunk name
+  async (author) => {
+    const data = await fetch(`https://dev.to/api/articles?username=${author}`);
+    const json = await data.json();
+    console.log(json); // REMOVE
+    return json;
+  }
+);
 
 
 
