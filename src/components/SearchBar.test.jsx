@@ -3,6 +3,8 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import { describe, it, expect, vi } from 'vitest';
 import { useDispatch } from 'react-redux';
+import userEvent from "@testing-library/user-event";
+import { cleanup } from "@testing-library/react"
 
 //mocking react-redux useDispatch this lives outside the test. 
 vi.mock("react-redux", () => ({
@@ -33,6 +35,75 @@ expect(testRadio).toHaveLength(2); //getAllByRole instead because there are two 
 
 const testButton = screen.getByRole("button");
 expect(testButton).toBeInTheDocument();
+
+cleanup();
+})
+
+it(" Component calls tag thunk with user interaction.", async ()=> {
+
+const mockDispatch = vi.fn();
+useDispatch.mockReturnValue(mockDispatch);
+/*mockReturnValue(mockDispatch) means when the component calls useDispatch(), it gets back that fake function instead of the real one. So when handleSubmit calls dispatch(loadArticlesByTag(...)), it's actually calling mockDispatch — and you can then assert what it was called with.*/
+
+render(<SearchBar/>);
+
+//Below mimics user typing a tag, selecting tag radio and pressing search. 
+//get the elements
+const inputBox = screen.getByRole("textbox");
+const radioBoxes = screen.getAllByRole("radio");// get all radios
+const searchButton = screen.getByRole("button");
+// moc user
+await userEvent.type(inputBox, "react");
+await userEvent.click(radioBoxes[0]);// click the first radio
+await userEvent.click(searchButton);
+
+// assertion
+expect(mockDispatch).toHaveBeenCalled();
+//clean up
+cleanup();
+})
+
+it("component calls username thunk with user interaction", async () => {
+const mockDispatch = vi.fn();
+useDispatch.mockReturnValue(mockDispatch);
+
+render(<SearchBar/>)
+
+//get the elements
+const inputBox = screen.getByRole("textbox");
+const radioBoxes = screen.getAllByRole("radio");// get all radios
+const searchButton = screen.getByRole("button");
+
+// moc user
+await userEvent.type(inputBox, "jeffrey");
+await userEvent.click(radioBoxes[1]);
+await userEvent.click(searchButton);
+
+// assertion
+expect(mockDispatch).toHaveBeenCalled();
+//clean up
+cleanup();
+
 })
 
 })
+
+
+
+
+
+
+
+/* it("Should show new thought to be present", async () => {
+  render(<App />);
+
+  // The code below mimics a user posting a thought with text 'Oreos are delicious'
+  const addThoughtInput = screen.getByRole("input");
+  const addButton = screen.getByRole("submit");
+ await userEvent.type(addThoughtInput, "Oreos are delicious");
+ await userEvent.click(addButton);
+
+  // Modify testing logic here
+  const thought = await screen.findByText("Oreos are delicious");
+  expect(thought).toBeInTheDocument();
+}); */
