@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import articlesReducer, { loadArticles, allArticles, selectIsLoading, loadArticlesByTag, loadArticlesByTopNumber } from './articlesSlice';
+import articlesReducer, { loadArticles, allArticles, selectIsLoading, loadArticlesByTag, loadArticlesByTopNumber, loadArticlesByUsername } from './articlesSlice';
 
 describe('articlesSlice', () => {
 
@@ -163,6 +163,30 @@ it('loadArticlesByTopNumber fetches articles from the API', async () => {
     expect(fetch).toHaveBeenCalledWith(`https://dev.to/api/articles?top=${topNumber}`);
     expect(result.payload).toEqual(fakeTopArticles);
     expect(result.type).toBe('articles/loadArticlesByTopNumber/fulfilled');
+  });
+
+  it('loadArticlesByUsername fetches articles from the API', async () => {
+    const fakeUsernameArticles = [
+      { type_of: 'username article', id: 1, title: 'Test username One' },
+      { type_of: 'username article', id: 2, title: 'Test username Two' },
+    ];
+
+    global.fetch = vi.fn(() =>
+      Promise.resolve({
+        json: () => Promise.resolve(fakeUsernameArticles),
+      })
+    );
+
+    const dispatch = vi.fn();
+    const getState = vi.fn();
+    const username = ('jeffrey'); // thunk ecpects a string
+
+    const result = await loadArticlesByUsername(username)(dispatch, getState, undefined);
+
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith(`https://dev.to/api/articles?username=${username}`);
+    expect(result.payload).toEqual(fakeUsernameArticles);
+    expect(result.type).toBe('articles/loadArticlesByUsername/fulfilled');
   });
 });
 

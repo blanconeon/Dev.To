@@ -31,8 +31,8 @@ export const loadArticlesByTopNumber = createAsyncThunk(
   }
 );
 
-export const loadArticlesByAuthor = createAsyncThunk(
-  'articles/loadArticlesByAuthor', //articles=from slice name: and loadArticlesByAuthor thunk name
+export const loadArticlesByUsername = createAsyncThunk(
+  'articles/loadArticlesByUsername', //articles=from slice name: and loadArticlesByAuthor thunk name
   async (author) => {
     const data = await fetch(`https://dev.to/api/articles?username=${author}`);
     const json = await data.json();
@@ -91,15 +91,15 @@ export const articlesSlice = createSlice({
       state.error = true;
     })
     //loadArticlesByAuthor
-    .addCase(loadArticlesByAuthor.pending, (state)=> {
+    .addCase(loadArticlesByUsername.pending, (state)=> {
       state.isLoading = true;
       state.error = false;
     })
-    .addCase(loadArticlesByAuthor.fulfilled, (state, action) => {
+    .addCase(loadArticlesByUsername.fulfilled, (state, action) => {
       state.isLoading = false;
       state.articlesList = action.payload;
     })
-    .addCase(loadArticlesByAuthor.rejected, (state) => {
+    .addCase(loadArticlesByUsername.rejected, (state) => {
       state.isLoading = false;
       state.error = true;
     })
