@@ -94,16 +94,4 @@ cleanup();
 
 
 
-/* it("Should show new thought to be present", async () => {
-  render(<App />);
-
-  // The code below mimics a user posting a thought with text 'Oreos are delicious'
-  const addThoughtInput = screen.getByRole("input");
-  const addButton = screen.getByRole("submit");
- await userEvent.type(addThoughtInput, "Oreos are delicious");
- await userEvent.click(addButton);
-
-  // Modify testing logic here
-  const thought = await screen.findByText("Oreos are delicious");
-  expect(thought).toBeInTheDocument();
-}); */
+/* Exactly. mockDispatch is a dummy function that records calls. When handleSubmit runs and calls dispatch(loadArticlesByTag("react")), mockDispatch catches that call — but it doesn't actually execute the thunk. You're just confirming something was handed to dispatch. */
