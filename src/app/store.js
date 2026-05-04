@@ -6,7 +6,7 @@ import articlesReducer from "../features/articles/articlesSlice";
 const store = configureStore({
   reducer: {
     articles: articlesReducer
-
+    // comments: commentsReducer
 
   },
 });
