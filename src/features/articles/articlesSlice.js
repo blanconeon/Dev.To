@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 
+
+
 export const loadArticles = createAsyncThunk(
   'articles/loadArticles', //articles=from slice name: and loadArticles thunk name
   async () => {
@@ -41,11 +43,21 @@ export const loadArticlesByUsername = createAsyncThunk(
   }
 );
 
+export const loadArticlesById = createAsyncThunk(
+'articles/loadArticlesById', 
+async (id) => {
+const data = await fetch(`https://dev.to/api/articles/${id}`);
+const json = await data.json();
+console.log(json); // REMOVE
+return json;
+})
+
 
 
 export const articlesSlice = createSlice({
   name: 'articles',
   initialState: {
+    currentArticle: null,
     articlesList: [],
     isLoading: false,
     error: false
@@ -103,12 +115,26 @@ export const articlesSlice = createSlice({
       state.isLoading = false;
       state.error = true;
     })
+    //loadArticlesById
+    .addCase(loadArticlesById.pending, (state)=> {
+     state.isLoading = true;
+     state.error = false; 
+    })
+    .addCase(loadArticlesById.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.currentArticle = action.payload;
+    })
+    .addCase(loadArticlesById.rejected, (state) => {
+     state.isLoading = false;
+     state.error = true;
+    })
   },
 });
 
 export default articlesSlice.reducer;
 
 export const allArticles = (state) => state.articles.articlesList;
+export const selectCurrentArticle = (state) => state.articles.currentArticle; //specific to current article
 export const selectIsLoading = (state) => state.articles.isLoading; 
 // you can also export the error but it depends if you want to display it in UI
 

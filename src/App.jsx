@@ -1,5 +1,6 @@
 import Root from "./layouts/Root";
 import HomePage from "./pages/HomePage";
+import ArticlePage from "./pages/ArticlePage";
 
 // Add react-router-dom imports
 import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route} from 'react-router-dom';
@@ -9,7 +10,7 @@ const appRouter = createBrowserRouter(createRoutesFromElements(
  <Route index element={<HomePage/>}/>
 
  <Route path=":type" element={<HomePage />} />
-
+ <Route path="articles/:id" element={<ArticlePage />} />
 
 
 </Route>));
