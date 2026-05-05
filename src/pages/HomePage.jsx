@@ -2,6 +2,9 @@ import { loadArticles, selectIsLoading, allArticles, loadArticlesByTag, loadArti
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from "react-router-dom";
+import ArticleCard from "../components/ArticleCard";
+
+
 //“Fetch on page load” usually means “dispatch the fetch in useEffect when the page mounts,” not “call fetch directly inside render.”
 
 
@@ -47,10 +50,7 @@ return (
 <>
 <div>
     {loadedArticles.map(article => (
-     <div key={article.id}>
-        <h2>{article.title}</h2>
-        <p>{article.description}</p>
-        </div>   
+        <ArticleCard key={article.id} article={article} />
     ))}
 </div>
 </>
