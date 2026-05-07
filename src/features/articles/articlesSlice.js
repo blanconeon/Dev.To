@@ -102,7 +102,7 @@ export const articlesSlice = createSlice({
       state.isLoading = false;
       state.error = true;
     })
-    //loadArticlesByAuthor
+    //loadArticlesByUserName
     .addCase(loadArticlesByUsername.pending, (state)=> {
       state.isLoading = true;
       state.error = false;
