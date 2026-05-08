@@ -32,7 +32,7 @@ cleanup()
 })
 })
 //FINISH UP TESTING THE URL IN THE HREF CONTANED IN THE LINK POINT STO THE RIGHT DIRECTION
-//expect(link).toHaveAttribute("href", "/articles/1")
+//expect(link).toHaveAttribute("href", "/articles/1");
 /* const link = screen.getByRole("link");
 expect(link).toBeInTheDocument();
 expect(link).toHaveAttribute("href", "/articles/1");
