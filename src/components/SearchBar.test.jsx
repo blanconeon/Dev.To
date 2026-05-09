@@ -23,7 +23,7 @@ const mockDispatch = vi.fn();
 useDispatch.mockReturnValue(mockDispatch);
 
     //render component
-render(<SearchBar/>)
+render(<SearchBar/>) // SearchBar has no Router hooks, so no MemoryRouter needed
 
 //assertions
 
@@ -39,7 +39,7 @@ expect(testButton).toBeInTheDocument();
 cleanup();
 })
 
-it(" Component calls tag thunk with user interaction.", async ()=> {
+it(" Component triggers dispatch with user interaction.", async ()=> {
 
 const mockDispatch = vi.fn();
 useDispatch.mockReturnValue(mockDispatch);
