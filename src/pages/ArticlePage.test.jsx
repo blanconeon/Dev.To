@@ -3,7 +3,7 @@ import "@testing-library/jest-dom/vitest";
 import ArticlePage from "./ArticlePage";
 import { describe, it, expect, vi } from 'vitest';
 import { useSelector, useDispatch } from 'react-redux';
-import { MemoryRouter} from 'react-router-dom';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
 
 
 //mocking react-redux useSelector, useDispatch this lives outside the test. 
@@ -56,7 +56,12 @@ const mockDispatch = vi.fn();
 useDispatch.mockReturnValue(mockDispatch);
 
 //rendering
-render(<MemoryRouter initialEntries={["/articles/1"]}><ArticlePage/></MemoryRouter>);
+render(<MemoryRouter initialEntries={["/articles/1"]}>
+  <Routes>
+    <Route path="/articles/:id" element={<ArticlePage/>} />
+  </Routes>
+</MemoryRouter>
+);
 
 // assertion
 await waitFor(() => expect(mockDispatch).toHaveBeenCalled()) //waitFor when there is no userInteraction.
@@ -65,7 +70,16 @@ cleanup();
 })
 })
 
+
+
+
+
+
 /* 
+. Only useParams requires a route pattern to extract named segments, which is why ArticlePage specifically needs <Routes><Route>.
+ — useParams needs a route pattern to know what to extract from the URL. MemoryRouter alone provides context but no pattern. <Routes><Route path="/articles/:id"> is what completes it.
+
+
 
 
 Component mock does two things:

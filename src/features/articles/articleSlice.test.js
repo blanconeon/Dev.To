@@ -188,6 +188,14 @@ it('loadArticlesByTopNumber fetches articles from the API', async () => {
     expect(result.payload).toEqual(fakeUsernameArticles);
     expect(result.type).toBe('articles/loadArticlesByUsername/fulfilled');
   });
+  // Test loadArticlesById
+  it ( "loadArticlesById fteches article from the API", async () => {
+  
+    const fakeArticle = { body_html: "The results are in!" };
+
+
+
+  })
 });
 
 /*1fakeArticles
