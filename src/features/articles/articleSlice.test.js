@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import articlesReducer, { loadArticles, allArticles, selectIsLoading, loadArticlesByTag, loadArticlesByTopNumber, loadArticlesByUsername } from './articlesSlice';
+import articlesReducer, { loadArticles, allArticles, selectIsLoading, loadArticlesByTag, loadArticlesByTopNumber, loadArticlesByUsername, loadArticlesById } from './articlesSlice';
 
 describe('articlesSlice', () => {
 
@@ -193,7 +193,24 @@ it('loadArticlesByTopNumber fetches articles from the API', async () => {
   
     const fakeArticle = { body_html: "The results are in!" };
 
+   global.fetch = vi.fn(() =>
+      Promise.resolve({
+        json: () => Promise.resolve(fakeArticle),
+      })
+    );
 
+    const dispatch = vi.fn();
+    const getState = vi.fn();
+    const articleId = ('1'); // thunk ecpects a string
+
+    const result = await loadArticlesById(articleId)(dispatch, getState, undefined);
+    
+    // assertion 
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith(`https://dev.to/api/articles/${articleId}`);
+    expect(result.payload).toEqual(fakeArticle);
+    expect(result.type).toBe('articles/loadArticlesById/fulfilled');
+   
 
   })
 });
