@@ -21,6 +21,23 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
         articleComments: null,
         isLoading: false,
         error:false
+    },
+    extraReducers: (builder) => {
+     builder
+     //loadCommentsById
+     .addCase(loadCommentsById.pending, (state) => {
+       state.isLoading = true;
+       state.error = false; 
+     })
+     .addCase(loadCommentsById.fulfilled, (state, action) => {
+     state.isLoading = false;
+     state.fulfilled = action.payload;
+     })
+     .addCase(loadCommentsById.rejected, (state) => {
+     state.isLoading = false;
+     state.error = true;  
+     })
+
     }
   })
 
