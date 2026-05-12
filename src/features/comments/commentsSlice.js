@@ -31,7 +31,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
      })
      .addCase(loadCommentsById.fulfilled, (state, action) => {
      state.isLoading = false;
-     state.fulfilled = action.payload;
+     state.articleComments = action.payload;
      })
      .addCase(loadCommentsById.rejected, (state) => {
      state.isLoading = false;
@@ -43,6 +43,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 
   export default commentSlice.reducer; // .reducer is a property that slice generates automatically. 
+  
   /*
   isLoading and error are conventional state field names used across the industry. pending/fulfilled/rejected are action states, not state fields. Mixing the naming could confuse future readers — keep what you have.
   */

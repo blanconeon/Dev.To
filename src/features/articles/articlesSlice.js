@@ -133,8 +133,8 @@ export const articlesSlice = createSlice({
 
 export default articlesSlice.reducer;
 
-export const allArticles = (state) => state.articles.articlesList;
-export const selectCurrentArticle = (state) => state.articles.currentArticle; //specific to current article
+export const allArticles = (state) => state.articles.articlesList;//for the list of articles
+export const selectCurrentArticle = (state) => state.articles.currentArticle; //for single article
 export const selectIsLoading = (state) => state.articles.isLoading; 
 // you can also export the error but it depends if you want to display it in UI
 

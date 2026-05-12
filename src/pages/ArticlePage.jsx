@@ -2,6 +2,7 @@ import { loadArticlesById, selectCurrentArticle, selectIsLoading  } from "../fea
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
+import { loadCommentsById } from "../features/comments/commentsSlice";//Comments imported from commentslice
 
 
 
