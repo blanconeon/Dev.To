@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { loadCommentsById, commentIsLoading, loadedComments } from "../features/comments/commentsSlice";//Comments imported from commentslice
+import { CommentList } from "../components/CommentsList";
 
 
 
@@ -44,7 +45,10 @@ you removed the !loadedComment check. If comments fail to load you'll just rende
 return (
 <>
 <div dangerouslySetInnerHTML={{ __html: loadedArticle.body_html }}/>
-
+<hr />
+{loadedComment.map( comment => {
+    return <div key={comment.id_code}><CommentList comment={comment}/></div>
+})}
 </>
 )}  
 

@@ -18,7 +18,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
   export const commentSlice = createSlice({
     name: 'comments',
     initialState: {
-        articleComments: null,
+        articleComments: [],
         isLoading: false,
         error:false
     },
