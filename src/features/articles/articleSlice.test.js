@@ -55,7 +55,7 @@ const fakeState = {
     error: false
 }
 
-// thunk object is used, no api call made
+// thunk object is set to rejected, no api call made
 const action = loadArticles.rejected();
 
 //act 
