@@ -16,11 +16,16 @@ vi.mock("react-redux", () => ({
 
 describe("ArticlePage component", ()=> {
 it("component renders", ()=> {
-
+// ArticlePage uses both article and comments slice so fake test must include both
 const fakeState  = {
  articles: {
  currentArticle: { body_html: "The results are in!" },
  isLoading: false, 
+ },
+ comments:{
+  articleComments: [],
+    isLoading: false,
+    error:false
  },
 };
 
@@ -45,6 +50,11 @@ const fakeState  = {
  articles: {
  currentArticle: { body_html: "The results are in!" },
  isLoading: false, 
+ },
+ comments:{
+  articleComments: [],
+    isLoading: false,
+    error:false
  },
 };
 

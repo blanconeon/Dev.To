@@ -13,16 +13,14 @@ const fakeState = {
 };
 
 // thunk object is used, api call not made
-const action = loadArticles.pending(); // this in the reducer sets isLoading to true
+const action = loadArticles.pending(); // here the thunk sets isLoading to true
 
 //act
-const actualState = articlesReducer(fakeState, action); // sets isLoading to true
+const actualState = articlesReducer(fakeState, action); // sets isLoading to true. IMPORTANT the reducer is what actually updates state. thunk does fetch and returns fulfiled pending or rejected
 
 //assert
 expect(actualState.isLoading).toBe(true);
  });
-
-
 
 
 
@@ -189,7 +187,7 @@ it('loadArticlesByTopNumber fetches articles from the API', async () => {
     expect(result.type).toBe('articles/loadArticlesByUsername/fulfilled');
   });
   // Test loadArticlesById
-  it ( "loadArticlesById fteches article from the API", async () => {
+  it ( "loadArticlesById fetches article from the API", async () => {
   
     const fakeArticle = { body_html: "The results are in!" };
 
