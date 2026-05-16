@@ -91,13 +91,52 @@ expect(loadedStateComments).toEqual(fakeComments.comments.articleComments); // a
 
 expect(isLoadingComments).toBe(fakeComments.comments.isLoading);
 // asserts the value returned by the commentIsLoading selector matches the isLoading value in fakeState
+});
+
+it ("loadCommentsById thunk calls the correct API URL and returns articles as payload on success", async () => {
+
+ const fakeComments = [{type_of: 'comment', id_code: 3, body_html: '<p> this is my comment<p>'}, {type_of: 'comment', id: 4, body_html: ' Renee is my comment'}];
 
 
+ //replacing the real browser fetch with a fake function that immediately returns your fake data,
+ global.fetch = vi.fn(() =>
+      Promise.resolve({
+        json: () => Promise.resolve(fakeComments),
+      })
+    );
+  
+    // creating fake Redux dispatch and getState functions so you can run the thunk manually without a real Redux store.
+    const dispatch = vi.fn();
+    const getState = vi.fn();
+    
+    const id = "id"; // thunk expects the id string.
 
+    //manually running the thunk by calling it twice — first loadCommentsById() creates the thunk, then (dispatch, getState, undefined) executes it — and storing the final action it returns in result.
 
-})
+    /* the below is a JavaScript pattern called currying — a function that returns another function.
 
+     createAsyncThunk builds a function that works in two steps:
 
+      loadCommentsById(id)        // step 1: returns a new function (the thunk)
+           (dispatch, getState, undefined)  // step 2: executes that function
+       Step 1 takes your argument (id) and packages it up. Step 2 is where Redux would normally call it — passing dispatch and getState from the store. In the test you do both steps manually because there's no real Redux store running.
+
+      Think of it like a two stage rocket — first stage sets it up, second stage fires it. */
+
+   const result = await loadCommentsById(id)(dispatch, getState, undefined);
+  
+   /*  fetch was called exactly once
+       fetch was called with the correct URL
+       The thunk returned your fake articles as the payload
+       The thunk completed successfully (not rejected)*/
+
+       
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith(`https://dev.to/api/comments?a_id=${id}`);
+    expect(result.payload).toEqual(fakeComments);
+    expect(result.type).toBe('comments/loadCommentsById/fulfilled');
+
+});
 }) 
 
 

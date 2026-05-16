@@ -93,7 +93,8 @@ expect(isLoadingArticles).toBe(fakeState.articles.isLoading);
 
 })
 
-it('loadArticles fetches articles from the API', async () => {
+it('loadArticles thunk calls the correct API URL and returns articles as payload on success'
+, async () => {
     const fakeArticles = [
       { type_of: 'article', id: 1, title: 'Test One' },
       { type_of: 'article', id: 2, title: 'Test Two' },
@@ -108,6 +109,7 @@ it('loadArticles fetches articles from the API', async () => {
     const dispatch = vi.fn();
     const getState = vi.fn();
 
+   
     const result = await loadArticles()(dispatch, getState, undefined);
 
     expect(fetch).toHaveBeenCalledTimes(1);
