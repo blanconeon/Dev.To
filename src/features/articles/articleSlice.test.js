@@ -82,14 +82,15 @@ const fakeState = {
 }
 
 //act
-const loadedArticles = allArticles(fakeState);
-const isLoadingArticles = selectIsLoading(fakeState);
+const loadedArticles = allArticles(fakeState); //drills into fakeState.articles.articlesList and returns it.
+const isLoadingArticles = selectIsLoading(fakeState);// selectIsLoading(fakeState) drills into fakeState.articles.isLoading and returns it
 
 //assert
 
-expect(loadedArticles).toEqual(fakeState.articles.articlesList);
-expect(isLoadingArticles).toBe(false);
-// useSelectors is for react components
+expect(loadedArticles).toEqual(fakeState.articles.articlesList);// asserts the value returned by the allArticles selector matches the articlesList array in fakeState.
+expect(isLoadingArticles).toBe(fakeState.articles.isLoading);
+//asserts the value returned by the selectIsLoading selector matches the isLoading value in fakeState
+
 })
 
 it('loadArticles fetches articles from the API', async () => {

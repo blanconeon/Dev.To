@@ -73,14 +73,24 @@ expect(actualState.error).toBe(true);
 
 it ("selectors access correct data, returning article & isLoading false state", () => {
 
-    const  fakeArticles = {
+    const  fakeComments = {
+        comments: {
   articleComments: [{type_of: 'comment', id_code: 3, body_html: '<p> this is my comment<p>'}, {type_of: 'comment', id: 4, body_html: ' Renee is my comment'}],
   isLoading: false,
-  error: false  
+  error: false
+        }  
 }
 
+//act
+const loadedStateComments = loadedComments(fakeComments);//drills into fakeState.comments.articleComments and returns it.
+const isLoadingComments = commentIsLoading(fakeComments);//// commentIsLoading(fakeState) drills into fakeState.comments.isLoading and returns it
 
+// assert
 
+expect(loadedStateComments).toEqual(fakeComments.comments.articleComments); // asserts the value returned by the loadedComments selector matches the articleComments array in fakeState.
+
+expect(isLoadingComments).toBe(fakeComments.comments.isLoading);
+// asserts the value returned by the commentIsLoading selector matches the isLoading value in fakeState
 
 
 

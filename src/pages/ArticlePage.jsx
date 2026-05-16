@@ -12,7 +12,7 @@ const dispatch = useDispatch();
 const loadedArticle = useSelector(selectCurrentArticle);
 const isLoadingArticles = useSelector(selectIsLoading);
 // comments thunk
-const loadedComment = useSelector(loadedComments);
+const loadedStateComment = useSelector(loadedComments);
 const isLoadingComments = useSelector(commentIsLoading);
 
 const {id} = useParams(); //useParams returns an objects because there could be multiple parameters, like: /users/:userId/posts/:postId - this would give { userId: "...", postId: "..."}. IMPORTANT: the variable name must match the key to hold that value. In my case my parameter's key is id so I label the variable id. 
@@ -46,7 +46,7 @@ return (
 <>
 <div dangerouslySetInnerHTML={{ __html: loadedArticle.body_html }}/>
 <hr />
-{loadedComment.map( comment => {
+{loadedStateComment.map( comment => {
     return <div key={comment.id_code}><CommentList comment={comment}/></div>
 })}
 </>
