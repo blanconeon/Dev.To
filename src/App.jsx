@@ -28,4 +28,6 @@ function App() {
 export default App;
 
 
+/*Any component that uses a router hook like useParams, useSearchParams, or NavLink needs a router context in the test — regardless of whether it's in createBrowserRouter.
 
+CommentsList passed without a router because it uses none of those hooks.*/
