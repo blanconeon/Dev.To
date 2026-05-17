@@ -28,7 +28,7 @@ it ("Confirming that the Link exists", () => {
 
   const link = screen.getByRole("link")
   //assertion
-  expect(link).toBeInTheDocument();
+  expect(link).toBeInTheDocument();//redundant but ok the below tests it already
   //assertion
   expect(link).toHaveAttribute("href", "/articles/1");
  //cleanup

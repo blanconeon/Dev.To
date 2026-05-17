@@ -1,10 +1,9 @@
 import SearchBar from "./SearchBar"
-import { render, screen } from "@testing-library/react";
+import { render, screen, cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import { describe, it, expect, vi } from 'vitest';
 import { useDispatch } from 'react-redux';
 import userEvent from "@testing-library/user-event";
-import { cleanup } from "@testing-library/react"
 
 //mocking react-redux useDispatch this lives outside the test. 
 vi.mock("react-redux", () => ({
