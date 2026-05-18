@@ -9,7 +9,13 @@ import userEvent from "@testing-library/user-event";
 vi.mock("react-redux", () => ({
   useDispatch: vi.fn(),
 }));
+ /* THIS IS THE MOCK FOR THE USENAVIGATE USING REACT ROUTER, Check if this does not clash with above mock for react-redux
 
+ vi.mock("react-router-dom", () => ({
+  useNavigate: vi.fn()
+}))
+  
+*/
 
 
 //test

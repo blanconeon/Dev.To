@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 const SearchBar = () => {
 
-//const dispatch = useDispatch();
+
 const navigate = useNavigate()
 
 
