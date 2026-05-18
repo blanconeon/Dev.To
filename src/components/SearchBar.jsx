@@ -6,7 +6,10 @@ import { useNavigate } from "react-router-dom";
 
 const SearchBar = () => {
 
-const dispatch = useDispatch();
+//const dispatch = useDispatch();
+const navigate = useNavigate()
+
+
 
 const [radioValue, setRadioValue] = useState('');
 const [inputState, setInputState] = useState('');
@@ -26,9 +29,9 @@ alert(" invalid selection.");
 return; // empty return stops the function from continuing. 
 }
 if (radioValue === "tags") {
-dispatch(loadArticlesByTag(inputState))
+navigate(`/?tag=${inputState}`)
 } else if (radioValue === "name") {
-dispatch(loadArticlesByUsername(inputState))    
+navigate(`/?username=${inputState}`)    
 }
 }
 
