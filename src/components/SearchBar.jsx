@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { loadArticlesByTag, loadArticlesByUsername } from "../features/articles/articlesSlice";
 import { useDispatch } from 'react-redux';
+import { useNavigate } from "react-router-dom";
+
 
 const SearchBar = () => {
 

@@ -34,8 +34,5 @@ ArticleCard — the <Link> in ArticleCard just changes the URL. ArticlePage is w
 
 ArticleCard doesn't need to be in App.jsx — it's a component, not a page/route. Only pages that have their own URL need to be in the router. ArticleCard just lives inside HomePage and the <Link> inside it handles the navigation.
 
-{article.tags.map( tag => {
-            return <Link to={`/?tag=${tag}`} key={tag}>{tag}</Link>
-        })}
             
        */
