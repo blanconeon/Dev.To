@@ -4,18 +4,18 @@ import "@testing-library/jest-dom/vitest";
 import { describe, it, expect, vi } from 'vitest';
 import { useDispatch } from 'react-redux';
 import userEvent from "@testing-library/user-event";
+import { useNavigate } from "react-router-dom";
 
 //mocking react-redux useDispatch this lives outside the test. 
 vi.mock("react-redux", () => ({
   useDispatch: vi.fn(),
 }));
- /* THIS IS THE MOCK FOR THE USENAVIGATE USING REACT ROUTER, Check if this does not clash with above mock for react-redux
-
- vi.mock("react-router-dom", () => ({
+ 
+vi.mock("react-router-dom", () => ({
   useNavigate: vi.fn()
 }))
   
-*/
+
 
 
 //test
@@ -23,9 +23,9 @@ describe("SearchBar component", () => {
 it("does component render the form", ()=> {
 
 
-//SearchBar has a useDispatch. useDispatch is still needed because the component calls it when it mounts.
-const mockDispatch = vi.fn();
-useDispatch.mockReturnValue(mockDispatch);
+//SearchBar has a useNavigate hok invoked on mount. useNavigate still needs to be mocked because the component calls it when it mounts.
+const mockUseNavigate = vi.fn();
+useNavigate.mockReturnValue(mockUseNavigate);
 
     //render component
 render(<SearchBar/>) // SearchBar has no Router hooks, so no MemoryRouter needed
@@ -44,11 +44,11 @@ expect(testButton).toBeInTheDocument();
 cleanup();
 })
 
-it(" Component triggers dispatch with user interaction.", async ()=> {
+it(" .", async ()=> {
 
-const mockDispatch = vi.fn();
-useDispatch.mockReturnValue(mockDispatch);
-/*mockReturnValue(mockDispatch) means when the component calls useDispatch(), it gets back that fake function instead of the real one. So when handleSubmit calls dispatch(loadArticlesByTag(...)), it's actually calling mockDispatch — and you can then assert what it was called with.*/
+const mockUseNavigate = vi.fn();
+useNavigate.mockReturnValue(mockUseNavigate);
+/*mockReturnValue(useNavigate) means when the component calls useNvigate(), it gets back that fake function instead of the real one when handleSubmit calls it.*/
 
 render(<SearchBar/>);
 
@@ -63,14 +63,14 @@ await userEvent.click(radioBoxes[0]);// click the first radio
 await userEvent.click(searchButton);
 
 // assertion
-expect(mockDispatch).toHaveBeenCalled();
+expect(mockUseNavigate).toHaveBeenCalledWith('/?tag=react');
 //clean up
 cleanup();
 })
 
-it("component calls username thunk with user interaction", async () => {
-const mockDispatch = vi.fn();
-useDispatch.mockReturnValue(mockDispatch);
+it("component calls username useNavigate() with user interaction", async () => {
+const mockUseNavigate = vi.fn();
+useNavigate.mockReturnValue(mockUseNavigate);
 
 render(<SearchBar/>)
 
@@ -85,7 +85,7 @@ await userEvent.click(radioBoxes[1]);
 await userEvent.click(searchButton);
 
 // assertion
-expect(mockDispatch).toHaveBeenCalled();
+expect(mockUseNavigate).toHaveBeenCalledWith("/?username=jeffrey");
 //clean up
 cleanup();
 
