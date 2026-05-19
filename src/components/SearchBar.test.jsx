@@ -99,4 +99,4 @@ cleanup();
 
 
 
-/* Exactly. mockDispatch is a dummy function that records calls. When handleSubmit runs and calls dispatch(loadArticlesByTag("react")), mockDispatch catches that call — but it doesn't actually execute the thunk. You're just confirming something was handed to dispatch. */
+/* Yes Exactly. mockDispatch is a dummy function that records calls. When handleSubmit runs and calls dispatch(loadArticlesByTag("react")), mockDispatch catches that call — but it doesn't actually execute the thunk. You're just confirming something was handed to dispatch. */
