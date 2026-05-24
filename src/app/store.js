@@ -2,11 +2,13 @@ import { configureStore } from "@reduxjs/toolkit";
 // import reducers
 import articlesReducer from "../features/articles/articlesSlice";
 import commentsReducer from "../features/comments/commentsSlice";
+import profileReducer from "../features/profile/profileSlice";
 
 const store = configureStore({
   reducer: {
     articles: articlesReducer,
-    comments: commentsReducer
+    comments: commentsReducer,
+    profile: profileReducer
 
   },
 });

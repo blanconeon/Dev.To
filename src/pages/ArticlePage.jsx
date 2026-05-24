@@ -15,7 +15,7 @@ const isLoadingArticles = useSelector(selectIsLoading);
 const loadedStateComment = useSelector(loadedComments);
 const isLoadingComments = useSelector(commentIsLoading);
 
-const {id} = useParams(); //useParams returns an objects because there could be multiple parameters, like: /users/:userId/posts/:postId - this would give { userId: "...", postId: "..."}. IMPORTANT: the variable name must match the key to hold that value. In my case my parameter's key is id so I label the variable id. 
+const {id} = useParams(); //useParams returns an objects because there could be multiple parameters, like: /users/:userId/posts/:postId - this would give { userId: "...", postId: "..."}. IMPORTANT: the variable name must match the key (the key is the router name! ) to hold that value. In my case my parameter's key is id so I label the variable id. 
 
 useEffect(() => {
 if (id) {
@@ -54,6 +54,8 @@ return (
 {loadedStateComment.map( comment => {
     return <div key={comment.id_code}><CommentList comment={comment}/></div>
 })}
+<hr />
+<Link to={`/profile/${loadedArticle.user.username}`}>{loadedArticle.user.username}</Link>
 </>
 )}  
 

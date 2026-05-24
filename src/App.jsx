@@ -1,6 +1,7 @@
 import Root from "./layouts/Root";
 import HomePage from "./pages/HomePage";
 import ArticlePage from "./pages/ArticlePage";
+import ProfilePage from "./pages/ProfilePage";
 
 // Add react-router-dom imports
 import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route} from 'react-router-dom';
@@ -11,7 +12,7 @@ const appRouter = createBrowserRouter(createRoutesFromElements(
 
  <Route path=":type" element={<HomePage />} />
  <Route path="articles/:id" element={<ArticlePage />} />
-
+ <Route path="profile/:username" element={<ProfilePage />} />
 
 </Route>));
 
