@@ -19,7 +19,7 @@ it("component renders", ()=> {
 // ArticlePage uses both article and comments slice so fake test must include both
 const fakeState  = {
  articles: {
- currentArticle: { body_html: "The results are in!" },
+ currentArticle: { body_html: "The results are in!", user: { username: "testuser" } },
  isLoading: false, 
  },
  comments:{
@@ -48,7 +48,7 @@ it("dispatch in component is triggered", async () => {
 
 const fakeState  = {
  articles: {
- currentArticle: { body_html: "The results are in!" },
+ currentArticle: { body_html: "The results are in!", user: { username: "testuser" } },
  isLoading: false, 
  },
  comments:{
