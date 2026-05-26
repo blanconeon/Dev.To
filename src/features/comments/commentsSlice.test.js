@@ -30,11 +30,12 @@ const  fakeState = {
   error: false  
 }
 
-// thunk object is used, api call not made
+
 const fakeComments = [{type_of: 'comment', id_code: 3, body_html: '<p> this is my comment<p>'}, {type_of: 'comment', id: 4, body_html: ' Renee is my comment'}]
+// thunk action creator is used, not the thunk itself
 const action = loadCommentsById.fulfilled(fakeComments) // this is the reducer sets isLoading to false
 
-// act
+// act, reducer processes the action and returns new state
 
 const actualState = commentsReducer(fakeState, action);
 
@@ -57,7 +58,7 @@ const  fakeState = {
 }
 
 //act
-// thunk is set to hold rejeted
+// thunk action creator is used, not the thunk itsel
 const action = loadCommentsById.rejected();
 
 const actualState = commentsReducer(fakeState, action);
@@ -82,8 +83,8 @@ it ("selectors access correct data, returning article & isLoading false state", 
 }
 
 //act
-const loadedStateComments = loadedComments(fakeComments);//drills into fakeState.comments.articleComments and returns it.
-const isLoadingComments = commentIsLoading(fakeComments);//// commentIsLoading(fakeState) drills into fakeState.comments.isLoading and returns it
+const loadedStateComments = loadedComments(fakeComments);//drills into fake state.comments.articleComments and returns it.
+const isLoadingComments = commentIsLoading(fakeComments);//// commentIsLoading drills into (fakeState) fakeComments.comments.isLoading and returns it
 
 // assert
 
