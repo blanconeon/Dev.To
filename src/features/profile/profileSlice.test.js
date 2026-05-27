@@ -86,6 +86,30 @@ expect(isLoadingProfile).toBe(fakeState.profile.isLoading);
 
 
 })
+it ("loadProfileByUserName thunk calls the correct API URL and returns profile as payload on success", async ()=> {
 
+const fakeProfile = {twitter_username: "obetomuniz", type_of: "user", username: "obetomuniz"}   
+
+ //replacing the real browser fetch with a fake function that immediately returns your fake data,
+ global.fetch = vi.fn(() =>
+      Promise.resolve({
+        json: () => Promise.resolve(fakeProfile),
+      })
+    );
+
+     // creating fake Redux dispatch and getState functions so you can run the thunk manually without a real Redux store.
+    const dispatch = vi.fn();
+    const getState = vi.fn();
+
+    const userName = "jess"; // thunk expects the id string.
+
+    const result = await loadProfileByUserName(userName)(dispatch, getState, undefined);
+
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith(`https://dev.to/api/users/by_username?url=${userName}`);
+    expect(result.payload).toEqual(fakeProfile);
+    expect(result.type).toBe('profile/loadProfileByUserName/fulfilled'); /* 'profile/loadProfileByUserName/fulfilled' comes from matching the string in the thunk, in this case on fulfilled  */
+
+})
 
 })

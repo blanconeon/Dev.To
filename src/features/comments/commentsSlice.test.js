@@ -58,7 +58,7 @@ const  fakeState = {
 }
 
 //act
-// thunk action creator is used, not the thunk itsel
+// thunk action creator is used, not the thunk itsel!
 const action = loadCommentsById.rejected();
 
 const actualState = commentsReducer(fakeState, action);
@@ -135,7 +135,8 @@ it ("loadCommentsById thunk calls the correct API URL and returns articles as pa
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(fetch).toHaveBeenCalledWith(`https://dev.to/api/comments?a_id=${id}`);
     expect(result.payload).toEqual(fakeComments);
-    expect(result.type).toBe('comments/loadCommentsById/fulfilled');
+    expect(result.type).toBe('comments/loadCommentsById/fulfilled'); /*'comments/loadCommentsById/fulfilled' comes from matching the string in the thunk, in this case on fulfilled  */
+
 
 });
 }) 
