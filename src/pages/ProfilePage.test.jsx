@@ -118,4 +118,37 @@ it("renders no results state", () => {
   expect(screen.getByText("No results")).toBeInTheDocument();
   cleanup();
 });
+
+it("component renders profile's articles", () => {
+
+const fakeState = {
+    profile: {
+    selectedProfile: {twitter_username: "obetomuniz", type_of: "user", username: "obetomuniz", joined_at: "31/12/1999"} ,
+    isLoading: false,
+    error:false
+}, articles: {
+    articlesList: [{ id: 1, title: "Test title", description: "Test description" }],
+    isLoading: false,
+    error: false
+    }}
+
+//mock selector mocks both the profile and the articles selector used in the component, thats why fake state holds both profile and articles
+useSelector.mockImplementation((selector) => selector(fakeState));
+// mockDispatch
+const mockDispatch = vi.fn();
+useDispatch.mockReturnValue(mockDispatch);
+
+//render
+
+render(<MemoryRouter><ProfilePage/></MemoryRouter>)
+// assertions
+const profileTest = screen.getByText("Test title");
+expect(profileTest).toBeInTheDocument();
+
+cleanup();
 })
+})
+
+/* 
+When testing a component that maps over a list, one item in the fake array is sufficient — the goal is to verify the mapping logic works, not to replicate production data volume. If the component renders one item correctly, it will render many
+*/

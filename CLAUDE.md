@@ -28,14 +28,28 @@ Provider (Redux)          — src/main.jsx
   └── RouterProvider      — src/App.jsx (createBrowserRouter)
         └── Root layout   — src/layouts/Root.jsx
               ├── NavBar  — always rendered, contains SearchBar
-              └── Outlet  → HomePage (index route "/")
+              └── Outlet  → page routes (see below)
 ```
 
-**State management:** Single Redux slice `articles` (`src/features/articles/articlesSlice.js`) with four async thunks:
+**Routes:**
+- `/` → `HomePage` (index)
+- `/articles/:id` → `ArticlePage` — dispatches `loadArticlesById(id)` + `loadCommentsById(id)`
+- `/profile/:username` → `ProfilePage` — dispatches `loadProfileByUserName(username)` + `loadArticlesByUsername(username)`
+
+**Redux store — three slices** (`src/app/store.js`):
+
+| Slice | File | Key state |
+|-------|------|-----------|
+| `articles` | `src/features/articles/articlesSlice.js` | `articlesList`, `currentArticle`, `isLoading`, `error` |
+| `comments` | `src/features/comments/commentsSlice.js` | `articleComments`, `isLoading`, `error` |
+| `profile` | `src/features/profile/profileSlice.js` | `selectedProfile`, `isLoading`, `error` |
+
+**`articles` slice thunks:**
 - `loadArticles` — default feed
 - `loadArticlesByTag(tagName)` — single tag (multi-tag not supported by API)
 - `loadArticlesByTopNumber(topNumber)` — trending by day count (e.g. `7`, `30`)
 - `loadArticlesByUsername(username)` — exact dev.to username lookup
+- `loadArticlesById(id)` — single article detail (stored in `currentArticle`)
 
 **Routing → Redux flow:** NavBar `NavLink`s change the URL. `HomePage` reads `useSearchParams` and dispatches the right thunk in a `useEffect`. SearchBar dispatches directly on form submit without touching the URL.
 
@@ -49,6 +63,6 @@ Provider (Redux)          — src/main.jsx
 - Test runner: Vitest with jsdom environment
 - Component tests use `@testing-library/react` + `@testing-library/user-event`
 - `react-redux` is always mocked with `vi.mock` in component tests; `useDispatch` and `useSelector` are mocked as `vi.fn()`
-- Components that use Router hooks require `<MemoryRouter>` wrapper in tests
+- Components that use Router hooks (`useParams`, `useSearchParams`, `NavLink`) require `<MemoryRouter>` wrapper in tests
 - Thunk tests invoke the thunk directly: `thunkFn(arg)(dispatch, getState, undefined)` with a mocked `global.fetch`
 - Add `afterEach(cleanup)` when multiple tests render the same component
