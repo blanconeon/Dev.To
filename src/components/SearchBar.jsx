@@ -29,9 +29,9 @@ alert(" invalid selection.");
 return; // empty return stops the function from continuing. 
 }
 if (radioValue === "tags") {
-navigate(`/?tag=${inputState}`)
+navigate(`/articles/?tag=${inputState}`)
 } else if (radioValue === "name") {
-navigate(`/?username=${inputState}`)    
+navigate(`/articles/?username=${inputState}`)    
 }
 }
 
@@ -59,3 +59,14 @@ return (
 }
 
 export default SearchBar;
+
+/*The browser URL and the API URL are completely separate things. The browser URL (/?tag=react) is just for routing — it tells React Router which component to render. The API URL (https://dev.to/api/articles?tag=react) is hardcoded inside the thunk.
+
+The flow is:
+
+navigate('/?tag=react') changes the browser URL
+React Router matches / → renders HomePage
+useSearchParams reads tag=react
+useEffect dispatches loadArticlesByTag('react')
+The thunk builds https://dev.to/api/articles?tag=react and fetches it
+The browser URL never touches the API directly. The thunk always builds its own URL regardless of what the browser URL looks like.*/

@@ -10,7 +10,7 @@ const appRouter = createBrowserRouter(createRoutesFromElements(
 <Route path='/' element={<Root/> }>
  <Route index element={<HomePage/>}/>
 
- <Route path=":type" element={<HomePage />} />
+ <Route path="/articles" element={<HomePage />} /> 
  <Route path="articles/:id" element={<ArticlePage />} />
  <Route path="profile/:username" element={<ProfilePage />} />
 
@@ -30,6 +30,11 @@ export default App;
 
 
 /*
+
+React Router only matches routes against the path (the part before ?). Query params are invisible to the router — it never uses them for route matching. That's why /:type is needed as a path placeholder, and useSearchParams is a separate hook to read what comes after the ?.
+
+The /:type route in App.jsx exists so that NavBar links like /articles?tag=react don't 404. The path segment /articles matches /:type, which renders HomePage. HomePage then ignores type entirely and reads the filter from the query string with useSearchParams. The route param is never used — it's just there to make the path valid.
+
 Any component that uses a router hook like useParams, useSearchParams, or NavLink needs a router context in the test — regardless of whether it's in createBrowserRouter.
 
 CommentsList passed without a router because it uses none of those hooks.
