@@ -76,10 +76,46 @@ await waitFor(() => expect(mockDispatch).toHaveBeenCalled()) //waitFor when ther
 //clean up
 cleanup();
 
-})
-})
-
 /* "The value in initialEntries (e.g. '/profile/obetomuniz') is matched against the Route path='/profile/:username' — React Router extracts 'obetomuniz' as the username param. The actual data rendered comes from fakeState, not from this value — it just needs to be a valid string that satisfies the route pattern.
 
  in practice initialEntries={["/profile/obetomuniz"]} makes :username equal "obetomuniz". That's the value useParams returns, which then gets passed to dispatch. The fakeState is separate — it controls what the selectors return, not what the URL say
 */
+
+})
+
+it("renders loading state", () => {
+  const fakeState = {
+    profile: { 
+        selectedProfile: null, 
+        isLoading: true, 
+        error: false },
+    articles: { 
+        articlesList: [], 
+        isLoading: false, 
+        error: false }
+  };
+  useSelector.mockImplementation((selector) => selector(fakeState));
+  useDispatch.mockReturnValue(vi.fn());
+  render(<MemoryRouter><ProfilePage /></MemoryRouter>);
+  expect(screen.getByText("Is loading..")).toBeInTheDocument();
+  cleanup();
+});
+
+it("renders no results state", () => {
+  const fakeState = {
+    profile: { 
+        selectedProfile: null, 
+        isLoading: false, 
+        error: false },
+    articles: { 
+        articlesList: [], 
+        isLoading: false, 
+        error: false }
+  };
+  useSelector.mockImplementation((selector) => selector(fakeState));
+  useDispatch.mockReturnValue(vi.fn());
+  render(<MemoryRouter><ProfilePage /></MemoryRouter>);
+  expect(screen.getByText("No results")).toBeInTheDocument();
+  cleanup();
+});
+})

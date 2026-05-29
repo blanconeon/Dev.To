@@ -77,7 +77,43 @@ render(<MemoryRouter initialEntries={["/articles/1"]}>
 await waitFor(() => expect(mockDispatch).toHaveBeenCalled()) //waitFor when there is no userInteraction.
 //clean up
 cleanup();
-})
+});
+
+it("renders loading state", () => {
+  const fakeState = {
+    articles: 
+    { currentArticle: null, 
+      isLoading: true, 
+      error: false },
+    comments:
+     { articleComments: [], 
+      isLoading: false, 
+      error: false }
+  };
+  useSelector.mockImplementation((selector) => selector(fakeState));
+  useDispatch.mockReturnValue(vi.fn());
+  render(<MemoryRouter><ArticlePage /></MemoryRouter>);
+  expect(screen.getByText("Is Loading")).toBeInTheDocument();
+  cleanup();
+});
+
+it("renders no results state", () => {
+  const fakeState = {
+    articles: { 
+      currentArticle: null, 
+      isLoading: false, 
+      error: false },
+    comments: { 
+      articleComments: [], 
+      isLoading: false, 
+      error: false }
+  };
+  useSelector.mockImplementation((selector) => selector(fakeState));
+  useDispatch.mockReturnValue(vi.fn());
+  render(<MemoryRouter><ArticlePage /></MemoryRouter>);
+  expect(screen.getByText("No results")).toBeInTheDocument();
+  cleanup();
+});
 })
 
 
