@@ -40,4 +40,46 @@ expect(profileTest).toBeInTheDocument();
 
 cleanup();
 })
+
+
+
+it("dispatch in component is triggered", async ()=> {
+
+const fakeState = {
+    profile: {
+    selectedProfile: {twitter_username: "obetomuniz", type_of: "user", username: "obetomuniz", joined_at: "31/12/1999"} ,
+    isLoading: false,
+    error:false
+}, articles: {
+    articlesList: [],
+    isLoading: false,
+    error: false
+    }}
+    
+useSelector.mockImplementation((selector) => selector(fakeState));    
+
+const mockDispatch = vi.fn();
+useDispatch.mockReturnValue(mockDispatch);
+
+/*useParams only returns a value when rendered inside a router with a matching route path. MemoryRouter + Routes + Route + initialEntries simulates the URL so useParams can extract the param — without it username is undefined and the useEffect never dispatches.*/
+
+//rendering
+render(<MemoryRouter initialEntries={["/profile/jess"]}>
+  <Routes>
+    <Route path="/profile/:username" element={<ProfilePage/>} />
+  </Routes>
+</MemoryRouter>
+);
+
+// assertion
+await waitFor(() => expect(mockDispatch).toHaveBeenCalled()) //waitFor when there is no userInteraction.
+//clean up
+cleanup();
+
 })
+})
+
+/* "The value in initialEntries (e.g. '/profile/obetomuniz') is matched against the Route path='/profile/:username' — React Router extracts 'obetomuniz' as the username param. The actual data rendered comes from fakeState, not from this value — it just needs to be a valid string that satisfies the route pattern.
+
+ in practice initialEntries={["/profile/obetomuniz"]} makes :username equal "obetomuniz". That's the value useParams returns, which then gets passed to dispatch. The fakeState is separate — it controls what the selectors return, not what the URL say
+*/
