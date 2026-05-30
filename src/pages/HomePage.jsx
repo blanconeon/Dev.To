@@ -13,10 +13,11 @@ const dispatch = useDispatch();
 const loadedArticles = useSelector(allArticles);
 const isLoadingArticles = useSelector(selectIsLoading);
 
-const [searchParams] = useSearchParams(); //array destructuring is by position not by name 
+const [searchParams, setSearchParams ] = useSearchParams(); //array destructuring is by position not by name 
 const tagName = searchParams.get('tag');
 const topNumber = searchParams.get("top");
 const username = searchParams.get("username");
+const page = searchParams.get("page") || 1;
 // start UseEffect for articles onload & useEffect for loadArticlesByTag
 /*So on first load:
 •	tag is null
@@ -34,9 +35,9 @@ if (tagName) {
  } else if (username) {
     dispatch(loadArticlesByUsername(username))
  } else  {
-dispatch(loadArticles())
+dispatch(loadArticles(page))
  }
-},[dispatch, tagName, topNumber, username ])
+},[dispatch, tagName, topNumber, username, page ])// dispatch is suppoused to  go there for safety
 
 if (isLoadingArticles) {
     return <div>Is Loading</div>
@@ -56,6 +57,8 @@ return (
         <ArticleCard key={article.id} article={article} />
     ))}
 </div>
+<button onClick={() => setSearchParams({page: Number(page) + 1})}>Next</button>
+<button onClick={() => setSearchParams({page: Number(page) - 1})} >Previous</button>
 </>
 
 )

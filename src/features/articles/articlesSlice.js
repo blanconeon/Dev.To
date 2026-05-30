@@ -5,8 +5,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const loadArticles = createAsyncThunk(
   'articles/loadArticles', //articles=from slice name: and loadArticles thunk name
-  async () => {
-    const data = await fetch('https://dev.to/api/articles');
+  async (page) => {
+    const data = await fetch(`https://dev.to/api/articles?page=${page}`);
     const json = await data.json();
     console.log(json); // REMOVE
     return json;
