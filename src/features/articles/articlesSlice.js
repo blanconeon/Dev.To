@@ -15,8 +15,9 @@ export const loadArticles = createAsyncThunk(
 
 export const loadArticlesByTag = createAsyncThunk(
   'articles/loadArticlesByTag', //articles=from slice name: and loadArticlesByTag thunk name
-  async (tagName) => {
-    const data = await fetch(`https://dev.to/api/articles?tag=${tagName}`);
+  async ({tagName, page}) => {
+    const data = await fetch(`https://dev.to/api/articles?tag=${tagName}&page=${page}`
+);
     const json = await data.json();
     console.log(json); // REMOVE
     return json;
@@ -25,8 +26,8 @@ export const loadArticlesByTag = createAsyncThunk(
 
 export const loadArticlesByTopNumber = createAsyncThunk(
   'articles/loadArticlesByTopNumber', //articles=from slice name: and loadArticlesByTrend thunk name
-  async (topNumber) => {
-    const data = await fetch(`https://dev.to/api/articles?top=${topNumber}`);
+  async ({topNumber, page}) => {
+    const data = await fetch(`https://dev.to/api/articles?top=${topNumber}&page=${page}`);
     const json = await data.json();
     console.log(json); // REMOVE
     return json;
@@ -35,8 +36,8 @@ export const loadArticlesByTopNumber = createAsyncThunk(
 
 export const loadArticlesByUsername = createAsyncThunk(
   'articles/loadArticlesByUsername', //articles=from slice name: and loadArticlesByAuthor thunk name
-  async (author) => {
-    const data = await fetch(`https://dev.to/api/articles?username=${author}`);
+  async ({username, page}) => {
+    const data = await fetch(`https://dev.to/api/articles?username=${username}&page=${page}`);
     const json = await data.json();
     console.log(json); // REMOVE
     return json;

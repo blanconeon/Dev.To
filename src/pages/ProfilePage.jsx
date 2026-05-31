@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { fetchedProfile, selectedProfIsLoading, loadProfileByUserName } from "../features/profile/profileSlice";
 import { selectIsLoading, allArticles, loadArticlesByUsername } from "../features/articles/articlesSlice";
 import ArticleCard from "../components/ArticleCard";
@@ -14,16 +14,23 @@ const dispatch = useDispatch();
 const loadedProfile = useSelector(fetchedProfile);
 const profileIsLoading = useSelector(selectedProfIsLoading);
 //from articlesSlice
-const loadedArticles = useSelector(allArticles)
+const loadedArticles = useSelector(allArticles);
+const [searchParams, setSearchParams ] = useSearchParams(); //array destructuring is by position not by name
 
 const {username} = useParams();
+const page = searchParams.get("page") || 1;
 
 useEffect(()=> {
 if (username) {
     dispatch(loadProfileByUserName(username))
-    dispatch(loadArticlesByUsername(username))
 }
-}, [username])
+}, [username]);
+
+useEffect(()=> {
+    // do not if(page) because is always true from || 1
+    dispatch(loadArticlesByUsername({username, page}))  
+            
+},[username, page]);
 
 if (profileIsLoading){
     return <div>Is loading..</div>
@@ -47,6 +54,19 @@ return (
         <ArticleCard key={article.id} article={article} />
     ))}
 </div>
+<button disabled={Number(page) <= 1}
+onClick={() => setSearchParams(prev => {
+  const next = new URLSearchParams(prev);
+  next.set('page', Number(page) - 1);
+  return next;
+})
+} >Previous</button>
+<button onClick={() => setSearchParams(prev => {
+  const next = new URLSearchParams(prev);
+  next.set('page', Number(page) + 1);
+  return next;
+})
+}>Next</button>
 
 </>
 )}

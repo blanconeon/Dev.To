@@ -31,6 +31,9 @@ export default App;
 
 /*
 
+<Route path="/articles" element={<HomePage />} /> exists purely to prevent a 404 when the URL is /articles. It has nothing to do with useSearchParams — once HomePage renders, useSearchParams reads the query string independently. The route handles the path, the hook handles the query string. Two separate concerns.
+/////////////////////////////////////////////////////////////////////
+
 React Router only matches routes against the path (the part before ?). Query params are invisible to the router — it never uses them for route matching. That's why /:type is needed as a path placeholder, and useSearchParams is a separate hook to read what comes after the ?.
 
 The /:type route in App.jsx exists so that NavBar links like /articles?tag=react don't 404. The path segment /articles matches /:type, which renders HomePage. HomePage then ignores type entirely and reads the filter from the query string with useSearchParams. The route param is never used — it's just there to make the path valid.

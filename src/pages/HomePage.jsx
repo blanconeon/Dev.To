@@ -29,11 +29,11 @@ That avoids both fetches competing.*/
 
 useEffect(() => {
 if (tagName) {
-    dispatch(loadArticlesByTag(tagName))
+    dispatch(loadArticlesByTag({tagName, page}))
  } else if(topNumber) {
-    dispatch(loadArticlesByTopNumber(topNumber))
+    dispatch(loadArticlesByTopNumber({topNumber, page}))
  } else if (username) {
-    dispatch(loadArticlesByUsername(username))
+    dispatch(loadArticlesByUsername({username, page}))
  } else  {
 dispatch(loadArticles(page))
  }
@@ -57,8 +57,19 @@ return (
         <ArticleCard key={article.id} article={article} />
     ))}
 </div>
-<button onClick={() => setSearchParams({page: Number(page) + 1})}>Next</button>
-<button onClick={() => setSearchParams({page: Number(page) - 1})} >Previous</button>
+<button disabled={Number(page) <= 1}
+onClick={() => setSearchParams(prev => {
+  const next = new URLSearchParams(prev);
+  next.set('page', Number(page) - 1);
+  return next;
+})
+} >Previous</button>
+<button onClick={() => setSearchParams(prev => {
+  const next = new URLSearchParams(prev);
+  next.set('page', Number(page) + 1);
+  return next;
+})
+}>Next</button>
 </>
 
 )
@@ -68,13 +79,46 @@ return (
 export default HomePage;
 
 
-/* So you build in this order:
+/* 
+this function : setSearchParams(prev => {
+  const next = new URLSearchParams(prev);
+  next.set('page', Number(page) + 1);
+  return next;
+})
 
-get articles fetching working
-confirm data renders
-then build navigation around a working app
 
-Navbar loads first visually, yes — but it’s not the main logic risk. The risky part is API + Redux + rendering.*/
+Breaking it down piece by piece:
+
+setSearchParams — updates the URL query string, from useSearchParams
+
+prev => — gets the current URL params as they are before changing anything, same concept as when you do setState(prev => prev + 1)
+
+new URLSearchParams(prev) — creates a copy of the current params so you don't mutate the original. Like spreading an array [...arr]
+
+next.set('page', Number(page) + 1) — on that copy, sets the page param to current page + 1. Number() just makes sure it's treated as a number not a string before adding 1
+
+return next — returns the updated params which updates the URL
+
+So the full picture:
+
+current URL: ?page=2&tag=react
+after function: ?page=3&tag=react
+The reason for copying with new URLSearchParams(prev) rather than just setting directly is to preserve any other existing params in the URL like tag=react — if you didn't copy first you'd wipe everything else and only have ?page=3.
+
+That's the key insight of this function!
+
+in my own words: 
+instead of replacing this: http://localhost:5173/articles/?tag=ruby with http://localhost:5173/articles/?page=2 once we click next. it grabs the tag=ruby and adds page=2 ..
+
+///////////
+new URLSearchParams(prev) — copies the current query string (which is empty at /)
+next.set('page', Number(page) + 1) — adds page=2 to that copy
+return next — setSearchParams takes that and updates the URL to /?page=2
+The / stays unchanged — setSearchParams only ever touches the query string, never the pat
+
+
+The ? is added automatically by setSearchParams when it updates the URL. You never write it manually — it just appears in the URL as the separator between the path and the query string.
+*/
 
 
 
