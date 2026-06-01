@@ -1,7 +1,7 @@
 import SearchBar from "./SearchBar"
 import { render, screen, cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import { useDispatch } from 'react-redux';
 import userEvent from "@testing-library/user-event";
 import { useNavigate } from "react-router-dom";
@@ -20,6 +20,8 @@ vi.mock("react-router-dom", () => ({
 
 //test
 describe("SearchBar component", () => {
+ // clean up 
+afterEach(cleanup);
 it("does component render the form", ()=> {
 
 
@@ -41,7 +43,7 @@ expect(testRadio).toHaveLength(2); //getAllByRole instead because there are two 
 const testButton = screen.getByRole("button");
 expect(testButton).toBeInTheDocument();
 
-cleanup();
+
 })
 
 it(" .", async ()=> {
@@ -63,9 +65,8 @@ await userEvent.click(radioBoxes[0]);// click the first radio
 await userEvent.click(searchButton);
 
 // assertion
-expect(mockUseNavigate).toHaveBeenCalledWith('/?tag=react');
-//clean up
-cleanup();
+expect(mockUseNavigate).toHaveBeenCalledWith('/articles?tag=react');
+
 })
 
 it("component calls username useNavigate() with user interaction", async () => {
@@ -85,9 +86,8 @@ await userEvent.click(radioBoxes[1]);
 await userEvent.click(searchButton);
 
 // assertion
-expect(mockUseNavigate).toHaveBeenCalledWith("/?username=jeffrey");
-//clean up
-cleanup();
+expect(mockUseNavigate).toHaveBeenCalledWith("/articles?username=jeffrey");
+
 
 })
 

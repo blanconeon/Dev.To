@@ -11,6 +11,7 @@ import ArticleCard from "../components/ArticleCard";
 const  HomePage = ()=> {
 const dispatch = useDispatch();
 const loadedArticles = useSelector(allArticles);
+console.log(loadedArticles.length);
 const isLoadingArticles = useSelector(selectIsLoading);
 
 const [searchParams, setSearchParams ] = useSearchParams(); //array destructuring is by position not by name 
@@ -64,10 +65,11 @@ onClick={() => setSearchParams(prev => {
   return next;
 })
 } >Previous</button>
-<button onClick={() => setSearchParams(prev => {
-  const next = new URLSearchParams(prev);
-  next.set('page', Number(page) + 1);
-  return next;
+<button disabled={loadedArticles.length < 30}
+onClick={() => setSearchParams(prev => {
+const next = new URLSearchParams(prev);
+next.set('page', Number(page) + 1);
+return next;
 })
 }>Next</button>
 </>

@@ -15,7 +15,7 @@ export const loadArticles = createAsyncThunk(
 
 export const loadArticlesByTag = createAsyncThunk(
   'articles/loadArticlesByTag', //articles=from slice name: and loadArticlesByTag thunk name
-  async ({tagName, page}) => {
+  async ({tagName, page}) => {// thunks only accept one argumnet so an object is passed
     const data = await fetch(`https://dev.to/api/articles?tag=${tagName}&page=${page}`
 );
     const json = await data.json();

@@ -110,10 +110,10 @@ it('loadArticles thunk calls the correct API URL and returns articles as payload
     const getState = vi.fn();
 
    
-    const result = await loadArticles()(dispatch, getState, undefined);
+    const result = await loadArticles(1)(dispatch, getState, undefined);
 
     expect(fetch).toHaveBeenCalledTimes(1);
-    expect(fetch).toHaveBeenCalledWith('https://dev.to/api/articles');
+    expect(fetch).toHaveBeenCalledWith(`https://dev.to/api/articles?page=1`);
     expect(result.payload).toEqual(fakeArticles);
     expect(result.type).toBe('articles/loadArticles/fulfilled');
   });
@@ -133,12 +133,12 @@ it('loadArticles thunk calls the correct API URL and returns articles as payload
     const dispatch = vi.fn();
     const getState = vi.fn();
     const tagName = ('react'); // thunk ecpects a string
-      //loadArticles (line 113) — calls loadArticles() with no arg, expects 'https://dev.to/api/articles'. Now needs loadArticles(1)
+    const page = 1;  
 
-    const result = await loadArticlesByTag(tagName)(dispatch, getState, undefined);
+    const result = await loadArticlesByTag({tagName, page})(dispatch, getState, undefined);
 
     expect(fetch).toHaveBeenCalledTimes(1);
-    expect(fetch).toHaveBeenCalledWith(`https://dev.to/api/articles?tag=${tagName}`);
+    expect(fetch).toHaveBeenCalledWith(`https://dev.to/api/articles?tag=${tagName}&page=${page}`);
     expect(result.payload).toEqual(fakeTagArticles);
     expect(result.type).toBe('articles/loadArticlesByTag/fulfilled');
   });
@@ -158,11 +158,12 @@ it('loadArticlesByTopNumber fetches articles from the API', async () => {
     const dispatch = vi.fn();
     const getState = vi.fn();
     const topNumber = ('7'); // thunk ecpects a string
+    const page = 1;
 
-    const result = await loadArticlesByTopNumber(topNumber)(dispatch, getState, undefined);
+    const result = await loadArticlesByTopNumber({topNumber, page})(dispatch, getState, undefined);
 
     expect(fetch).toHaveBeenCalledTimes(1);
-    expect(fetch).toHaveBeenCalledWith(`https://dev.to/api/articles?top=${topNumber}`);
+    expect(fetch).toHaveBeenCalledWith(`https://dev.to/api/articles?top=${topNumber}&page=${page}`);
     expect(result.payload).toEqual(fakeTopArticles);
     expect(result.type).toBe('articles/loadArticlesByTopNumber/fulfilled');
   });
@@ -182,11 +183,12 @@ it('loadArticlesByTopNumber fetches articles from the API', async () => {
     const dispatch = vi.fn();
     const getState = vi.fn();
     const username = ('jeffrey'); // thunk ecpects a string
+    const page = 1;
 
-    const result = await loadArticlesByUsername(username)(dispatch, getState, undefined);
+    const result = await loadArticlesByUsername({username, page})(dispatch, getState, undefined);
 
     expect(fetch).toHaveBeenCalledTimes(1);
-    expect(fetch).toHaveBeenCalledWith(`https://dev.to/api/articles?username=${username}`);
+    expect(fetch).toHaveBeenCalledWith(`https://dev.to/api/articles?username=${username}&page=${page}`);
     expect(result.payload).toEqual(fakeUsernameArticles);
     expect(result.type).toBe('articles/loadArticlesByUsername/fulfilled');
   });

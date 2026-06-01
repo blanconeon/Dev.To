@@ -29,9 +29,9 @@ alert(" invalid selection.");
 return; // empty return stops the function from continuing. 
 }
 if (radioValue === "tags") {
-navigate(`/articles/?tag=${inputState}`)
+navigate(`/articles?tag=${inputState}`)
 } else if (radioValue === "name") {
-navigate(`/articles/?username=${inputState}`)    
+navigate(`/articles?username=${inputState}`)    
 }
 }
 
