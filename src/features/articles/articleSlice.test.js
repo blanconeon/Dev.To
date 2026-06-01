@@ -133,6 +133,7 @@ it('loadArticles thunk calls the correct API URL and returns articles as payload
     const dispatch = vi.fn();
     const getState = vi.fn();
     const tagName = ('react'); // thunk ecpects a string
+      //loadArticles (line 113) — calls loadArticles() with no arg, expects 'https://dev.to/api/articles'. Now needs loadArticles(1)
 
     const result = await loadArticlesByTag(tagName)(dispatch, getState, undefined);
 
