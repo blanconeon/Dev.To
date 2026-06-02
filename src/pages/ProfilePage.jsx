@@ -15,6 +15,7 @@ const loadedProfile = useSelector(fetchedProfile);
 const profileIsLoading = useSelector(selectedProfIsLoading);
 //from articlesSlice
 const loadedArticles = useSelector(allArticles);
+console.log(loadedArticles.length);
 const [searchParams, setSearchParams ] = useSearchParams(); //array destructuring is by position not by name
 
 const {username} = useParams();
@@ -61,7 +62,7 @@ onClick={() => setSearchParams(prev => {
   return next;
 })
 } >Previous</button>
-<button onClick={() => setSearchParams(prev => {
+<button disabled={loadedArticles.length < 30} onClick={() => setSearchParams(prev => {
   const next = new URLSearchParams(prev);
   next.set('page', Number(page) + 1);
   return next;

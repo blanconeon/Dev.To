@@ -8,7 +8,7 @@ export const loadProfileByUserName = createAsyncThunk(
    async (userName) => {
    const data = await fetch(`https://dev.to/api/users/by_username?url=${userName}`);
    const json = await data.json();
-   console.log(json); // REMOVE
+   //console.log(json); // REMOVE
    return json;
    })
 

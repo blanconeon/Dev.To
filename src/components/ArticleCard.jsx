@@ -12,7 +12,7 @@ const ArticleCard = ({article})=> {
      <h2>{article.title}</h2>
     <p>{article.description}</p>
 </Link>
-{console.log(article.tag_list)}
+{/*console.log(article.tag_list)*/}
  {article.tag_list && article.tag_list.map(tag => (
    <Link to={`/?tag=${tag}`} key={tag}><span style={{ fontWeight: 'bold', marginRight: '8px' }}>{tag}</span>
 </Link>

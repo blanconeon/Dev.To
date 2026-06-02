@@ -8,7 +8,7 @@ export const loadArticles = createAsyncThunk(
   async (page) => {
     const data = await fetch(`https://dev.to/api/articles?page=${page}`);
     const json = await data.json();
-    console.log(json); // REMOVE
+   // console.log(json); // REMOVE
     return json;
   }
 );
@@ -19,7 +19,7 @@ export const loadArticlesByTag = createAsyncThunk(
     const data = await fetch(`https://dev.to/api/articles?tag=${tagName}&page=${page}`
 );
     const json = await data.json();
-    console.log(json); // REMOVE
+    //console.log(json); // REMOVE
     return json;
   }
 );
@@ -29,7 +29,7 @@ export const loadArticlesByTopNumber = createAsyncThunk(
   async ({topNumber, page}) => {
     const data = await fetch(`https://dev.to/api/articles?top=${topNumber}&page=${page}`);
     const json = await data.json();
-    console.log(json); // REMOVE
+    //console.log(json); // REMOVE
     return json;
   }
 );
@@ -39,7 +39,7 @@ export const loadArticlesByUsername = createAsyncThunk(
   async ({username, page}) => {
     const data = await fetch(`https://dev.to/api/articles?username=${username}&page=${page}`);
     const json = await data.json();
-    console.log(json); // REMOVE
+    //console.log(json); // REMOVE
     return json;
   }
 );
@@ -49,7 +49,7 @@ export const loadArticlesById = createAsyncThunk(
 async (id) => {
 const data = await fetch(`https://dev.to/api/articles/${id}`);
 const json = await data.json();
-console.log(json); // REMOVE
+//console.log(json); // REMOVE
 return json;
 })
 

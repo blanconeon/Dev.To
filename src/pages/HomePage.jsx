@@ -11,7 +11,6 @@ import ArticleCard from "../components/ArticleCard";
 const  HomePage = ()=> {
 const dispatch = useDispatch();
 const loadedArticles = useSelector(allArticles);
-console.log(loadedArticles.length);
 const isLoadingArticles = useSelector(selectIsLoading);
 
 const [searchParams, setSearchParams ] = useSearchParams(); //array destructuring is by position not by name 
