@@ -15,7 +15,7 @@ const loadedProfile = useSelector(fetchedProfile);
 const profileIsLoading = useSelector(selectedProfIsLoading);
 //from articlesSlice
 const loadedArticles = useSelector(allArticles);
-console.log(loadedArticles.length);
+//console.log(loadedArticles.length);
 const [searchParams, setSearchParams ] = useSearchParams(); //array destructuring is by position not by name
 
 const {username} = useParams();
@@ -50,7 +50,10 @@ return (
 <h5>Joined on {loadedProfile.joined_at}</h5>
 <h4>About me: {loadedProfile.summary}</h4>
 <hr />
+{loadedArticles.length === 0 && <div>No Results</div>}
+
 <div>
+    
     {loadedArticles.map(article => (
         <ArticleCard key={article.id} article={article} />
     ))}
@@ -82,4 +85,7 @@ useParams() gives you { username: "..." } — that's your URL, your naming
 You then pass that value to the thunk: dispatch(loadArticlesByUsername(username))
 The thunk uses it as ?username=${author} — dev.to's naming
 The value is the same (the actual username like "jess"), just passed through. The variable names don't need to match.
+
+
+{loadedArticles.length === 0 && <div>No Results</div>} : an inline conditional inside the JSX is cleaner here because you still want the profile info to show. A separate if statement before the return would block the whole page including the profile.
 */
