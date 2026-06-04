@@ -1,4 +1,4 @@
-import { loadArticlesById, selectCurrentArticle, selectIsLoading  } from "../features/articles/articlesSlice";
+import { loadArticlesById, selectCurrentArticle, selectIsLoading, articlesSliceError  } from "../features/articles/articlesSlice";
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, Link } from "react-router-dom";
 import { useEffect } from "react";
@@ -11,6 +11,7 @@ const ArticlePage = () => {
 const dispatch = useDispatch();
 const loadedArticle = useSelector(selectCurrentArticle);
 const isLoadingArticles = useSelector(selectIsLoading);
+const articleError = useSelector(articlesSliceError);
 // comments thunk
 const loadedStateComment = useSelector(loadedComments);
 const isLoadingComments = useSelector(commentIsLoading);
@@ -33,6 +34,10 @@ if (isLoadingComments) {
     return <div>Is Loading</div>;
 }
 
+if (articleError) {
+    return <div>{articleError}</div>
+}
+
 if (!loadedArticle) {
 return <div>No results</div>
 }
@@ -47,7 +52,7 @@ return (
 <div dangerouslySetInnerHTML={{ __html: loadedArticle.body_html }}/>
 
 {loadedArticle.tags && loadedArticle.tags.map( tag => {
- return <Link to={`/?tag=${tag}`} key={tag}><span style={{ fontWeight: 'bold', marginRight: '8px' }}>{tag}</span>
+ return <Link to={`articles/?tag=${tag}`} key={tag}><span style={{ fontWeight: 'bold', marginRight: '8px' }}>{tag}</span>
 </Link>  
 })}
 <hr />

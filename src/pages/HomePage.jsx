@@ -1,4 +1,4 @@
-import { loadArticles, selectIsLoading, allArticles, loadArticlesByTag, loadArticlesByTopNumber, loadArticlesByUsername } from "../features/articles/articlesSlice";
+import { loadArticles, selectIsLoading, allArticles, loadArticlesByTag, loadArticlesByTopNumber, loadArticlesByUsername, articlesSliceError } from "../features/articles/articlesSlice";
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from "react-router-dom";
@@ -12,6 +12,7 @@ const  HomePage = ()=> {
 const dispatch = useDispatch();
 const loadedArticles = useSelector(allArticles);
 const isLoadingArticles = useSelector(selectIsLoading);
+const articlesError = useSelector(articlesSliceError);
 
 const [searchParams, setSearchParams ] = useSearchParams(); //array destructuring is by position not by name 
 const tagName = searchParams.get('tag');
@@ -43,9 +44,15 @@ if (isLoadingArticles) {
     return <div>Is Loading</div>
 }
 
+if (articlesError) {
+    return <div>{articlesError}</div>
+}
+
 if (!Array.isArray(loadedArticles) || loadedArticles.length === 0) {
 return <div>No results</div>
 }
+
+
 
 
 
@@ -119,6 +126,11 @@ The / stays unchanged — setSearchParams only ever touches the query string, ne
 
 
 The ? is added automatically by setSearchParams when it updates the URL. You never write it manually — it just appears in the URL as the separator between the path and the query string.
+
+Yes — error in Redux persists between fetches. If a previous fetch failed and set error = "Failed to fetch", then you navigate to a new tag, isLoading goes true but error still has the old value until the new fetch either succeeds (clearing it) or fails. So checking isLoading first prevents showing a stale error.
+
+
+
 */
 
 

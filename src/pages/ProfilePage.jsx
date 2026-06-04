@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useSearchParams } from "react-router-dom";
-import { fetchedProfile, selectedProfIsLoading, loadProfileByUserName } from "../features/profile/profileSlice";
-import { selectIsLoading, allArticles, loadArticlesByUsername } from "../features/articles/articlesSlice";
+import { fetchedProfile, selectedProfIsLoading, loadProfileByUserName, profileSliceError } from "../features/profile/profileSlice";
+import { selectIsLoading, allArticles, loadArticlesByUsername, articlesSliceError } from "../features/articles/articlesSlice";
 import ArticleCard from "../components/ArticleCard";
 
 import { useEffect } from "react";
@@ -13,8 +13,10 @@ const ProfilePage = () => {
 const dispatch = useDispatch();
 const loadedProfile = useSelector(fetchedProfile);
 const profileIsLoading = useSelector(selectedProfIsLoading);
+const profileError = useSelector(profileSliceError);
 //from articlesSlice
 const loadedArticles = useSelector(allArticles);
+const articlesError = useSelector(articlesSliceError);
 //console.log(loadedArticles.length);
 const [searchParams, setSearchParams ] = useSearchParams(); //array destructuring is by position not by name
 
@@ -37,6 +39,11 @@ if (profileIsLoading){
     return <div>Is loading..</div>
 }
 
+if (profileError) {
+
+    return <div>Something went wrong..</div>
+}
+
 if (!loadedProfile) {
     return <div>No results</div>
 }
@@ -54,9 +61,9 @@ return (
 
 <div>
     
-    {loadedArticles.map(article => (
-        <ArticleCard key={article.id} article={article} />
-    ))}
+    {articlesError ? <div>{articlesError}</div> : loadedArticles.map(article => (
+        <ArticleCard key={article.id} article={article} /> 
+    ))} {/* profile info and articles are separate concerns, so you'd handle article errors you use an inline conditional rather than an early return */}
 </div>
 <button disabled={Number(page) <= 1}
 onClick={() => setSearchParams(prev => {

@@ -45,6 +45,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
   export default commentSlice.reducer; // .reducer is a property that slice generates automatically. 
    export const loadedComments = (state) => state.comments.articleComments;
    export const commentIsLoading = (state) => state.comments.isLoading;
+   
 
 
   /*

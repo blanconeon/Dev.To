@@ -65,7 +65,7 @@ export const articlesSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(loadArticles.pending, (state) => {
+      .addCase(loadArticles.pending, (state) => { //pending has no useful data on the action object so no action param is needed. 
         state.isLoading = true;
         state.error = false;
       })
@@ -75,7 +75,7 @@ export const articlesSlice = createSlice({
       })
       .addCase(loadArticles.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = true;
+        state.error = action.error.message
       })
       //loadArticlesByTag
       .addCase(loadArticlesByTag.pending, (state) => {
@@ -86,9 +86,9 @@ export const articlesSlice = createSlice({
       state.isLoading = false;
       state.articlesList = action.payload;
     })
-    .addCase(loadArticlesByTag.rejected, (state) => {
+    .addCase(loadArticlesByTag.rejected, (state, action) => {
       state.isLoading = false;
-      state.error = true;
+      state.error = action.error.message
     })
     //loadArticlesByTopNumber
     .addCase(loadArticlesByTopNumber.pending, (state) => {
@@ -99,9 +99,9 @@ export const articlesSlice = createSlice({
       state.isLoading = false;
       state.articlesList = action.payload;
     })
-    .addCase(loadArticlesByTopNumber.rejected, (state) => {
+    .addCase(loadArticlesByTopNumber.rejected, (state, action) => {
       state.isLoading = false;
-      state.error = true;
+      state.error = action.error.message
     })
     //loadArticlesByUserName
     .addCase(loadArticlesByUsername.pending, (state)=> {
@@ -112,9 +112,9 @@ export const articlesSlice = createSlice({
       state.isLoading = false;
       state.articlesList = action.payload;
     })
-    .addCase(loadArticlesByUsername.rejected, (state) => {
+    .addCase(loadArticlesByUsername.rejected, (state, action) => {
       state.isLoading = false;
-      state.error = true;
+      state.error = action.error.message
     })
     //loadArticlesById
     .addCase(loadArticlesById.pending, (state)=> {
@@ -125,9 +125,9 @@ export const articlesSlice = createSlice({
       state.isLoading = false;
       state.currentArticle = action.payload;
     })
-    .addCase(loadArticlesById.rejected, (state) => {
+    .addCase(loadArticlesById.rejected, (state, action) => {
      state.isLoading = false;
-     state.error = true;
+     state.error = action.error.message
     })
   },
 });
@@ -137,7 +137,9 @@ export default articlesSlice.reducer;
 export const allArticles = (state) => state.articles.articlesList;//for the list of articles
 export const selectCurrentArticle = (state) => state.articles.currentArticle; //for single article
 export const selectIsLoading = (state) => state.articles.isLoading; 
-// you can also export the error but it depends if you want to display it in UI
+
+export const articlesSliceError = (state) => state.articles.error;
+// you export the error to provide ui error message to user. Rember ui in component goes in between isLoading and No Results
 
 /*What’s happening:
 You write:

@@ -31,7 +31,7 @@ export const loadProfileByUserName = createAsyncThunk(
         state.isLoading = false;
         state.selectedProfile = action.payload;
         })
-        .addCase(loadProfileByUserName.rejected, (state) => {
+        .addCase(loadProfileByUserName.rejected, (state, action) => {
         state.isLoading = false;
         state.error = true;  
         })
@@ -42,4 +42,4 @@ export const loadProfileByUserName = createAsyncThunk(
      export default profileSlice.reducer; // .reducer is a property that slice generates automatically. 
         export const fetchedProfile = (state) => state.profile.selectedProfile;
         export const selectedProfIsLoading = (state) => state.profile.isLoading;
-     
+        export const profileSliceError = (state) => state.profile.error;
