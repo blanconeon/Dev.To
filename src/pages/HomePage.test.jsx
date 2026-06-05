@@ -122,7 +122,7 @@ expect(isLoading).toBeInTheDocument();
 
 })
 
-it("Next/Prev buttons — they render and Prev is disabled on page 1", ()=> {
+it("Next/Prev buttons — they render and Prev is disabled on page 1, Next is disabled when less than 30 articles", ()=> {
 
 const fakeState = {
   articles: {

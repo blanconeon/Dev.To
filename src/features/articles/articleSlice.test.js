@@ -220,7 +220,46 @@ it('loadArticlesByTopNumber fetches articles from the API', async () => {
    
 
   })
+
+  // THE FOLLING TESTS TEST THE BYID THUNK WHOLISTICALLY, SPECIFICALLY AS IT UPDATES currentArticle STATE SPECIFICALLY. ABOVE loadArticles IS USED TO DO A WHOLISTC TEST FOR THE articlesList STATE. NOTE WE HAVE THE REDUCER TARGETING DIFFERENT STATES WITHOUT MENTIONING THE OTHER IN THE TESTS. SO IN THE curretArticle TEST articlesList STATE IS NOT MENTIONED AND VICEVERSA. NOTE OTHER THUNKS LIKE BYTAG DONOT NEED WHoLISTIC TEST AS IT UPDATES THE SAME articlesList STATE loadArticles TESTED.  
+  it("sets isLoading to true when loadArticlesById is pending", () => {
+  const fakeState = {
+    currentArticle: null,
+    isLoading: false,
+    error: false
+  };
+  const action = loadArticlesById.pending();
+  const actualState = articlesReducer(fakeState, action);
+  expect(actualState.isLoading).toBe(true);
 });
+
+it("sets isLoading to false and currentArticle becomes fakeArticle", () => {
+  const fakeState = {
+    currentArticle: null,
+    isLoading: true,
+    error: false
+  };
+  const fakeArticle = { body_html: "The results are in!", user: { username: "testuser" } };
+  const action = loadArticlesById.fulfilled(fakeArticle);
+  const actualState = articlesReducer(fakeState, action);
+  expect(actualState.isLoading).toBe(false);
+  expect(actualState.currentArticle).toEqual(fakeArticle);
+});
+
+it("sets isLoading to false and error to message when loadArticlesById is rejected", () => {
+  const fakeState = {
+    currentArticle: null,
+    isLoading: true,
+    error: false
+  };
+  const action = loadArticlesById.rejected(null, '', new Error('Failed to fetch'));
+  const actualState = articlesReducer(fakeState, action);
+  expect(actualState.isLoading).toBe(false);
+  expect(actualState.error).toBe(action.error.message);
+});
+
+});
+
 
 /*1fakeArticles
 You create pretend API data.

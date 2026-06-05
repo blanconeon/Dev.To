@@ -114,6 +114,25 @@ it("renders no results state", () => {
   expect(screen.getByText("No results")).toBeInTheDocument();
   cleanup();
 });
+
+it("renders error message", () => {
+  const fakeState = {
+    articles: { 
+      currentArticle: null, 
+      isLoading: false, 
+      error: "error message" },
+    comments: { 
+      articleComments: [], 
+      isLoading: false, 
+      error: false }
+  };
+  useSelector.mockImplementation((selector) => selector(fakeState));
+  useDispatch.mockReturnValue(vi.fn());
+  render(<MemoryRouter><ArticlePage /></MemoryRouter>);
+  expect(screen.getByText("error message")).toBeInTheDocument();
+  cleanup();
+});
+
 })
 
 

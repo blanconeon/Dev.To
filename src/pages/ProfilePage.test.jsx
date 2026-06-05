@@ -119,6 +119,42 @@ it("renders no results state", () => {
   cleanup();
 });
 
+ it("profile renders: something went wrong ", ()=> {
+const fakeState = {
+    profile: { 
+        selectedProfile: null, 
+        isLoading: false, 
+        error: true }, // renders "something went wrong"
+    articles: { 
+        articlesList: [], 
+        isLoading: false, 
+        error: "error message" } // not this error
+  };
+  useSelector.mockImplementation((selector) => selector(fakeState));
+  useDispatch.mockReturnValue(vi.fn());
+  render(<MemoryRouter><ProfilePage /></MemoryRouter>);
+  expect(screen.getByText("Something went wrong..")).toBeInTheDocument();
+  cleanup();
+ })
+
+ it("articles renders error message ", ()=> {
+const fakeState = {
+    profile: { 
+        selectedProfile: {twitter_username: "obetomuniz", type_of: "user", username: "obetomuniz", joined_at: "31/12/1999"}, 
+        isLoading: false, 
+        error: false }, 
+    articles: { 
+        articlesList: [], 
+        isLoading: false, 
+        error: "error message" } // not this error
+  };
+  useSelector.mockImplementation((selector) => selector(fakeState));
+  useDispatch.mockReturnValue(vi.fn());
+  render(<MemoryRouter><ProfilePage /></MemoryRouter>);
+  expect(screen.getByText("error message")).toBeInTheDocument();
+  cleanup();
+ })
+
 it("component renders profile's articles", () => {
 
 const fakeState = {
@@ -146,6 +182,47 @@ const profileTest = screen.getByText("Test title");
 expect(profileTest).toBeInTheDocument();
 
 cleanup();
+})
+
+it("Next/Prev buttons — they render and Prev is disabled on page 1, Next is disabled when less than 30 articles", ()=> {
+
+const fakeState = {
+  profile: {
+    selectedProfile: { twitter_username: "obetomuniz", type_of: "user", username: "obetomuniz", joined_at: "31/12/1999" },
+    isLoading: false,
+    error: false
+  },
+  articles: {
+    articlesList: [
+      { id: 1, title: 'a' },
+      { id: 2, title: 'b' },
+      { id: 3, title: 'c' },
+      { id: 4, title: 'd' },
+      { id: 5, title: 'e' }
+    ],
+    isLoading: false,
+    error: null
+  },
+};
+
+//useSelector and useDispatch are React hooks called inside HomePage on every render.
+useSelector.mockImplementation((selector) => selector(fakeState)); 
+
+const mockDispatch = vi.fn();
+useDispatch.mockReturnValue(mockDispatch);
+
+// render
+render(<MemoryRouter><ProfilePage/></MemoryRouter>);
+//get the elements
+const buttons = screen.getAllByRole("button");
+
+//assert
+
+expect(buttons[0]).toBeInTheDocument();//Prev button
+expect(buttons[1]).toBeInTheDocument();//Next button
+
+expect(buttons[0]).toBeDisabled()//Prev button is disabled
+expect(buttons[1]).toBeDisabled()//Next button is disabled
 })
 })
 
