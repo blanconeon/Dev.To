@@ -57,7 +57,7 @@ return (
 <h5>Joined on {loadedProfile.joined_at}</h5>
 <h4>About me: {loadedProfile.summary}</h4>
 <hr />
-{loadedArticles.length === 0 && <div>No Results</div>}
+{loadedArticles.length === 0 && !articlesError && <div>No Results</div>}
 
 <div>
     
@@ -95,4 +95,25 @@ The value is the same (the actual username like "jess"), just passed through. Th
 
 
 {loadedArticles.length === 0 && <div>No Results</div>} : an inline conditional inside the JSX is cleaner here because you still want the profile info to show. A separate if statement before the return would block the whole page including the profile.
+
+
+
+Scenario 1: First load fails
+├── articlesError = "Failed to fetch"
+├── loadedArticles.length = 0
+├── Line 60: 0 === 0 ✓ BUT !articlesError = false → "No Results" NOT shown
+└── Line 64: articlesError truthy → shows "Failed to fetch"
+
+Scenario 2: Subsequent load fails
+├── articlesError = "Failed to fetch"
+├── loadedArticles.length = 30 (previous page still in state)
+├── Line 60: 30 === 0 ✗ → "No Results" NOT shown
+└── Line 64: articlesError truthy → shows "Failed to fetch"
+
+Scenario 3: No error, empty results
+├── articlesError = false
+├── loadedArticles.length = 0
+├── Line 60: 0 === 0 ✓ AND !articlesError = true → "No Results" shown
+└── Line 64: articlesError falsy → loadedArticles.map() → renders nothing (empty array)
+
 */

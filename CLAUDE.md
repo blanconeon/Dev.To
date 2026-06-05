@@ -65,6 +65,14 @@ Provider (Redux)          — src/main.jsx
 - `ProfilePage` uses both `useParams` (for `username` from the path) and `useSearchParams` (for `page`) — they coexist independently
 - `ProfilePage` has two separate `useEffect`s: one for `[username]` (profile fetch), one for `[username, page]` (articles fetch) — prevents re-fetching the profile on every page change
 
+**Error handling:**
+- `articlesSlice` — `rejected` cases store `action.error.message` (string) in `error`; exported as `articlesSliceError` selector
+- `profileSlice` — `rejected` case stores `true` in `error` (boolean, generic message shown in UI); exported as `profileSliceError` selector
+- `commentsSlice` — no error selector exported; comments failure is silent (article still renders without comments)
+- `HomePage` — early return order: loading → error → no results
+- `ArticlePage` — early return order: loading → comments loading → error → no results
+- `ProfilePage` — profile error uses early return (blocks whole page); articles error uses inline conditional `{articlesError ? <div>{articlesError}</div> : loadedArticles.map(...)}` so profile info stays visible; "No Results" check includes `!articlesError` guard to prevent both messages showing simultaneously when first load fails
+
 ## Testing conventions
 
 - Test runner: Vitest with jsdom environment
