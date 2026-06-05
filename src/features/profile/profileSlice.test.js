@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import profileReducer, { fetchedProfile, selectedProfIsLoading, loadProfileByUserName} from "./profileSlice";
+import profileReducer, { fetchedProfile, selectedProfIsLoading, loadProfileByUserName, profileSliceError} from "./profileSlice";
 
 
 
@@ -76,13 +76,17 @@ const fakeState = {
 
 //act. As per useSelector in slice fetchedProfile drills state till selectedProfile. in this  case fakeState.profile.seectedProfile. 
 const loadedProfile = fetchedProfile(fakeState);
-//act. Asper useSelector in slice selectedProfIsLoading drills state till isLoading. In this case fakeState.profile.isLoading
+//act. As per useSelector in slice selectedProfIsLoading drills state till isLoading. In this case fakeState.profile.isLoading
 const isLoadingProfile = selectedProfIsLoading(fakeState);
+//act. As per useSelector in slice profileSliceError drills state till error. In this case fakeState.profile.error
+const profileError = profileSliceError(fakeState)
 
 //assert
 expect(loadedProfile).toEqual(fakeState.profile.selectedProfile);
 //assert
 expect(isLoadingProfile).toBe(fakeState.profile.isLoading);
+//assert
+expect(profileError).toEqual(fakeState.profile.error);
 
 
 })

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import articlesReducer, { loadArticles, allArticles, selectIsLoading, loadArticlesByTag, loadArticlesByTopNumber, loadArticlesByUsername, loadArticlesById } from './articlesSlice';
+import articlesReducer, { loadArticles, allArticles, selectIsLoading, articlesSliceError, loadArticlesByTag, loadArticlesByTopNumber, loadArticlesByUsername, loadArticlesById } from './articlesSlice';
 
 describe('articlesSlice', () => {
 
@@ -47,7 +47,7 @@ expect(actualState.articlesList).toEqual(fakeArticles)
 
 });
 
-it(" sets isLoading to false and error to true", () => {
+it(" sets isLoading to false and error to message string", () => {
 //arrange
 const fakeState = {
     articlesList: [],
@@ -56,7 +56,8 @@ const fakeState = {
 }
 
 // thunk object is set to rejected, no api call made
-const action = loadArticles.rejected();
+const action = loadArticles.rejected(null, '', new Error('Failed to fetch'));
+
 
 //act 
 
@@ -66,7 +67,7 @@ const actualState = articlesReducer(fakeState, action);
 
 expect(actualState.isLoading).toBe(false);
 
-expect(actualState.error).toBe(true);
+expect(actualState.error).toBe(action.error.message); // this matches the error above in action. 
 
 })
 
@@ -84,12 +85,14 @@ const fakeState = {
 //act
 const loadedArticles = allArticles(fakeState); //drills into fakeState.articles.articlesList and returns it.
 const isLoadingArticles = selectIsLoading(fakeState);// selectIsLoading(fakeState) drills into fakeState.articles.isLoading and returns it
+const errorSelector = articlesSliceError(fakeState)//error selector
 
 //assert
 
 expect(loadedArticles).toEqual(fakeState.articles.articlesList);// asserts the value returned by the allArticles selector matches the articlesList array in fakeState.
 expect(isLoadingArticles).toBe(fakeState.articles.isLoading);
 //asserts the value returned by the selectIsLoading selector matches the isLoading value in fakeState
+expect(errorSelector).toBe(fakeState.articles.error); //assert the value returned by articlesSliceError matches the error state in fakeState
 
 })
 
