@@ -1,7 +1,7 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import HomePage from "./HomePage";
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import { useSelector, useDispatch } from 'react-redux';
 import { MemoryRouter} from 'react-router-dom';
 
@@ -13,12 +13,14 @@ vi.mock("react-redux", () => ({
 
 
 describe("homepage component", () => {
+  afterEach(cleanup);
 it("does page render title and description", ()=> {
 
 const fakeState = {
   articles: {
     articlesList: [{ id: 1, title: "Test title", description: "Test description" }],
     isLoading: false,
+    error: null
   },
 };
 // homepage has a useSelector and a useDispatch. The data only comes through useSelector. useDispatch is still needed because the component calls it when it mounts.
@@ -43,6 +45,116 @@ expect(testDescription).toBeInTheDocument();
 
 })
 
+it("Error state. When articlesSliceError returns a message, it renders that message", ()=> {
+
+const fakeState = {
+  articles: {
+    articlesList: [],
+    isLoading: false,
+    error: "fetch unsuccessful"
+  },
+};
+
+useSelector.mockImplementation((selector) => selector(fakeState)); 
+
+const mockDispatch = vi.fn();
+useDispatch.mockReturnValue(mockDispatch);
+
+//render
+render(<MemoryRouter><HomePage/></MemoryRouter>);
+
+const errorTest = screen.getByText("fetch unsuccessful");
+expect(errorTest).toBeInTheDocument();
+
+})
+
+it("No results — when articlesList is empty, renders No results", ()=> {
+
+const fakeState = {
+  articles: {
+    articlesList: [],
+    isLoading: false,
+    error: null
+  },
+};
+//useSelector and useDispatch are React hooks called inside HomePage on every render.
+useSelector.mockImplementation((selector) => selector(fakeState)); 
+
+const mockDispatch = vi.fn();
+useDispatch.mockReturnValue(mockDispatch);
+
+//render
+render(<MemoryRouter><HomePage/></MemoryRouter>);
+
+
+//assert
+
+const noResults = screen.getByText("No results");
+expect(noResults).toBeInTheDocument();
+
+
+})
+
+it("Loading state — when isLoading is true, renders Is Loading", ()=> {
+
+const fakeState = {
+  articles: {
+    articlesList: [],
+    isLoading: true,
+    error: null
+  },
+};
+//useSelector and useDispatch are React hooks called inside HomePage on every render.
+useSelector.mockImplementation((selector) => selector(fakeState)); 
+
+const mockDispatch = vi.fn();
+useDispatch.mockReturnValue(mockDispatch);
+
+//render
+render(<MemoryRouter><HomePage/></MemoryRouter>);
+
+
+//assert
+
+const isLoading = screen.getByText("Is Loading");
+expect(isLoading).toBeInTheDocument();
+
+
+})
+
+it("Next/Prev buttons — they render and Prev is disabled on page 1", ()=> {
+
+const fakeState = {
+  articles: {
+    articlesList: [
+  { id: 1, title: 'a' },
+  { id: 2, title: 'b' },
+  { id: 3, title: 'c' },
+  { id: 4, title: 'd' },
+  { id: 5, title: 'e' }],
+    isLoading: false,
+    error: null
+  },
+};
+//useSelector and useDispatch are React hooks called inside HomePage on every render.
+useSelector.mockImplementation((selector) => selector(fakeState)); 
+
+const mockDispatch = vi.fn();
+useDispatch.mockReturnValue(mockDispatch);
+
+// render
+render(<MemoryRouter><HomePage/></MemoryRouter>);
+//get the elements
+const buttons = screen.getAllByRole("button");
+
+//assert
+
+expect(buttons[0]).toBeInTheDocument();//Prev button
+expect(buttons[1]).toBeInTheDocument();//Next button
+
+expect(buttons[0]).toBeDisabled()//Prev button is disabled
+expect(buttons[1]).toBeDisabled()//Next button is disabled
+})
 })
 
 

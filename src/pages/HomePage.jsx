@@ -86,6 +86,26 @@ return next;
 
 export default HomePage;
 
+/*
+Error state — when articlesSliceError returns a message, it renders that message
+
+No results — when articlesList is empty, renders "No results"
+
+Loading state — when isLoading is true, renders "Is Loading"
+
+Next/Prev buttons — they render and Prev is disabled on page 1
+
+*/
+
+
+
+
+
+
+
+
+
+
 
 /* 
 this function : setSearchParams(prev => {
