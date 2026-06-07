@@ -82,3 +82,21 @@ Provider (Redux)          — src/main.jsx
 - Thunk tests invoke the thunk directly: `thunkFn(arg)(dispatch, getState, undefined)` with a mocked `global.fetch`
 - Thunks that accept objects (`loadArticlesByTag`, `loadArticlesByTopNumber`, `loadArticlesByUsername`) must be called with `{ param, page }` — the URL assertion must include `&page=`
 - Add `afterEach(cleanup)` when multiple tests render the same component
+
+**Test coverage per file:**
+
+| File | Tests |
+|------|-------|
+| `articlesSlice.test.js` | reducer: pending/fulfilled/rejected for `loadArticles`; reducer: pending/fulfilled/rejected for `loadArticlesById` (separate because it writes to `currentArticle`, not `articlesList`); selectors: `allArticles`, `selectIsLoading`, `articlesSliceError`; thunk URL tests for all five thunks |
+| `profileSlice.test.js` | reducer: pending/fulfilled/rejected for `loadProfileByUserName`; selectors: `fetchedProfile`, `selectedProfIsLoading`, `profileSliceError`; thunk URL test |
+| `commentsSlice.test.js` | reducer: pending/fulfilled/rejected; no selector test (error selector not exported — comments failure is silent) |
+| `HomePage.test.jsx` | renders articles; error state; no results; loading state; Prev/Next buttons (Prev disabled on page 1, Next disabled when < 30 articles) |
+| `ProfilePage.test.jsx` | renders profile data; dispatch triggered; loading state; no results; profile error ("Something went wrong.."); articles error ("error message" inline, requires `selectedProfile` present); renders articles list; Prev/Next buttons |
+| `ArticlePage.test.jsx` | renders article; dispatch triggered; loading state; no results; error message |
+| `SearchBar.test.jsx` | renders form elements; tag search navigates to `/articles?tag=react`; username search navigates to `/articles?username=jeffrey` |
+
+**Key testing patterns:**
+- Reducer tests only include state fields relevant to the action being tested — other fields can be omitted
+- `loadArticlesById` is the only thunk with both a thunk URL test AND reducer tests, because it writes to `currentArticle` while all other thunks write to `articlesList` (already covered by `loadArticles` reducer tests)
+- `ProfilePage` error tests are split: one with `profile.error: true` (early return, profile section never renders), one with `profile.error: false` + populated `selectedProfile` (reaches inline articles error)
+- ProfilePage button test requires `profile.selectedProfile` in fakeState — without it the component hits `!loadedProfile` early return before rendering buttons
