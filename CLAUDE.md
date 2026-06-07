@@ -100,3 +100,12 @@ Provider (Redux)          — src/main.jsx
 - `loadArticlesById` is the only thunk with both a thunk URL test AND reducer tests, because it writes to `currentArticle` while all other thunks write to `articlesList` (already covered by `loadArticles` reducer tests)
 - `ProfilePage` error tests are split: one with `profile.error: true` (early return, profile section never renders), one with `profile.error: false` + populated `selectedProfile` (reaches inline articles error)
 - ProfilePage button test requires `profile.selectedProfile` in fakeState — without it the component hits `!loadedProfile` early return before rendering buttons
+
+## E2E tests (Playwright)
+
+- Config: `playwright.config.js` at root — `testDir: './tests/'`, `baseURL: 'http://localhost:5173'`
+- `webServer` block starts `npm run dev` automatically before tests run — no need to start the dev server manually
+- Test files live in `tests/` at the root (not inside `src/`)
+- Run with: `npx playwright test`
+- Reports generated in `playwright-report/` (add to `.gitignore`)
+- No mocks — real browser, real API, real user interactions
