@@ -57,6 +57,19 @@ await page.goto('/');
 })
 })
 
+test.describe("NavBar", () => {
+  test("clicking Javascript loads articles", async ({ page }) => {
+    await page.goto('/');
+    await page.locator('h2').first().waitFor({ timeout: 15000 });
+
+    await page.getByRole('link', { name: 'Javascript', exact: true }).click();
+                                                // exact: true is needed as other jsvascript tags appear when other articles are loaded. extact: true compares for an exact Javascript with capital J.
+     // assert
+    await expect(page.locator('h2').first()).toBeVisible({ timeout: 15000 });
+  });
+});
+
+
 
 
 
