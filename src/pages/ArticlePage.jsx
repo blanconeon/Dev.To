@@ -52,7 +52,7 @@ return (
 <div dangerouslySetInnerHTML={{ __html: loadedArticle.body_html }}/>
 
 {loadedArticle.tags && loadedArticle.tags.map( tag => {
- return <Link to={`articles/?tag=${tag}`} key={tag}><span style={{ fontWeight: 'bold', marginRight: '8px' }}>{tag}</span>
+ return <Link to={`/articles?tag=${tag}`} key={tag}><span style={{ fontWeight: 'bold', marginRight: '8px' }}>{tag}</span>
 </Link>  
 })}
 <hr />
