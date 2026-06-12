@@ -10,3 +10,5 @@ await expect(page.locator('h3').first()).toBeVisible();
 
 
 })
+
+//No need to change the code. The profile username h2 is the first one, article titles come after. Use .nth(1) to target the second h2 — that's the first article title:
