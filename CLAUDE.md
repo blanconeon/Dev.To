@@ -109,3 +109,30 @@ Provider (Redux)          — src/main.jsx
 - Run with: `npx playwright test`
 - Reports generated in `playwright-report/` (add to `.gitignore`)
 - No mocks — real browser, real API, real user interactions
+- `trace: 'on'` in config — traces always captured, visible in `--ui` mode
+
+**Run commands:**
+```bash
+npx playwright test tests/homepage.spec.js          # headless, terminal output only
+npx playwright test tests/homepage.spec.js --headed # opens real browser, watch it run
+npx playwright test tests/homepage.spec.js --ui     # opens Playwright UI, run/inspect manually
+npx playwright test                                 # runs all test files, all browsers
+npx playwright test --project=chromium              # single browser for faster iteration
+```
+
+**E2E test coverage:**
+
+| File | Tests |
+|------|-------|
+| `HomePage.spec.js` | articles render (h2 visible); Prev disabled on page 1; Prev enabled after clicking Next |
+| `HomePage.spec.js` (SearchBar) | tag search: fill input, select radio, submit → h2 visible; username search: fill input, select radio, submit → h2 visible |
+| `HomePage.spec.js` (NavBar) | clicking Javascript link loads articles |
+| `ArticlePage.spec.js` | renders: click article from homepage → URL matches `/articles/\d+`; tags clickable → URL contains `?tag=`; author link → URL matches `/profile/` |
+| `ProfilePage.spec.js` | profile renders (h3 visible); articles render (second h2 visible); Prev disabled on page 1; Prev enabled after clicking Next |
+
+**Key E2E patterns:**
+- Always `waitFor` before asserting on elements that depend on API responses
+- Use `toBeVisible({ timeout: 15000 })` for elements that need API time to appear
+- Use CSS attribute selectors (`a[href*="?tag="] span`) to target specific elements when multiple similar elements exist
+- Assert on URL (`toHaveURL`) when rendered content is unpredictable (e.g. `dangerouslySetInnerHTML`)
+- Run `--project=chromium` during development, full browser suite for final runs
