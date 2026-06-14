@@ -1,5 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
+/*try {
+  const data = await getData('https://example.com/api/data');
+} catch (err) {
+  if (err.type === 'network') {
+    console.error('Network problem:', err.cause);
+  } else if (err.type === 'api') {
+    console.error(`API error ${err.status}:`, err.body);
+  }
+} ?????*/
 
 
 
