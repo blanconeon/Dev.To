@@ -8,7 +8,19 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
   } else if (err.type === 'api') {
     console.error(`API error ${err.status}:`, err.body);
   }
-} ?????*/
+}
+  
+async (id) => {
+  try {
+    const data = await fetch(`https://dev.to/api/articles/${id}`);
+    if (!data.ok) throw new Error(data.statusText); // API error
+    const json = await data.json();
+    return json;
+  } catch (err) {
+    throw err; // catches both network errors and API errors, re-throws
+  }
+}
+*/
 
 
 
