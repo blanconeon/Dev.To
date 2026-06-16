@@ -1,26 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-/*try {
-  const data = await getData('https://example.com/api/data');
-} catch (err) {
-  if (err.type === 'network') {
-    console.error('Network problem:', err.cause);
-  } else if (err.type === 'api') {
-    console.error(`API error ${err.status}:`, err.body);
-  }
-}
-  
+
+/*
 async (id) => {
-  try {
-    const data = await fetch(`https://dev.to/api/articles/${id}`);
-    if (!data.ok) throw new Error(data.statusText); // API error
-    const json = await data.json();
-    return json;
-  } catch (err) {
-    throw err; // catches both network errors and API errors, re-throws
-  }
-}
-*/
+  const data = await fetch(`https://dev.to/api/articles/${id}`); // fetch throws automatically on network failure
+  if (!data.ok) throw new Error(data.statusText); // manually throw on API error (4xx/5xx)
+  const json = await data.json(); // only reached if both checks pass
+  return json; // returned as action.payload on fulfilled
+}*/
 
 
 
