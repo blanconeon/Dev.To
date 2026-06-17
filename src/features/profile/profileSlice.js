@@ -7,6 +7,7 @@ export const loadProfileByUserName = createAsyncThunk(
    'profile/loadProfileByUserName', 
    async (userName) => {
    const data = await fetch(`https://dev.to/api/users/by_username?url=${userName}`);
+       if (!data.ok) throw new Error(data.statusText); // manually throw on API error (4xx/5xx)
    const json = await data.json();
    //console.log(json); // REMOVE
    return json;

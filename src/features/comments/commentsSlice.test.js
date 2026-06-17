@@ -101,7 +101,7 @@ it ("loadCommentsById thunk calls the correct API URL and returns articles as pa
 
  //replacing the real browser fetch with a fake function that immediately returns your fake data,
  global.fetch = vi.fn(() =>
-      Promise.resolve({
+      Promise.resolve({ok: true,
         json: () => Promise.resolve(fakeComments),
       })
     );

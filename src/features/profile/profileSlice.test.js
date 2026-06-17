@@ -96,7 +96,7 @@ const fakeProfile = {twitter_username: "obetomuniz", type_of: "user", username: 
 
  //replacing the real browser fetch with a fake function that immediately returns your fake data,
  global.fetch = vi.fn(() =>
-      Promise.resolve({
+      Promise.resolve({ok: true,
         json: () => Promise.resolve(fakeProfile),
       })
     );

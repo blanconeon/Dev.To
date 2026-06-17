@@ -1,20 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 
-/*
-async (id) => {
-  const data = await fetch(`https://dev.to/api/articles/${id}`); // fetch throws automatically on network failure
-  if (!data.ok) throw new Error(data.statusText); // manually throw on API error (4xx/5xx)
-  const json = await data.json(); // only reached if both checks pass
-  return json; // returned as action.payload on fulfilled
-}*/
-
-
+// Network errors are always thrown on fetch is they occur, API errors are manually thrown 
 
 export const loadArticles = createAsyncThunk(
   'articles/loadArticles', //articles=from slice name: and loadArticles thunk name
   async (page) => {
     const data = await fetch(`https://dev.to/api/articles?page=${page}`);
+      if (!data.ok) throw new Error(data.statusText); // manually throw on API error (4xx/5xx)
     const json = await data.json();
    // console.log(json); // REMOVE
     return json;
@@ -24,8 +17,8 @@ export const loadArticles = createAsyncThunk(
 export const loadArticlesByTag = createAsyncThunk(
   'articles/loadArticlesByTag', //articles=from slice name: and loadArticlesByTag thunk name
   async ({tagName, page}) => {// thunks only accept one argumnet so an object is passed
-    const data = await fetch(`https://dev.to/api/articles?tag=${tagName}&page=${page}`
-);
+    const data = await fetch(`https://dev.to/api/articles?tag=${tagName}&page=${page}`);
+        if (!data.ok) throw new Error(data.statusText); // manually throw on API error (4xx/5xx)
     const json = await data.json();
     //console.log(json); // REMOVE
     return json;
@@ -36,6 +29,7 @@ export const loadArticlesByTopNumber = createAsyncThunk(
   'articles/loadArticlesByTopNumber', //articles=from slice name: and loadArticlesByTrend thunk name
   async ({topNumber, page}) => {
     const data = await fetch(`https://dev.to/api/articles?top=${topNumber}&page=${page}`);
+        if (!data.ok) throw new Error(data.statusText); // manually throw on API error (4xx/5xx)
     const json = await data.json();
     //console.log(json); // REMOVE
     return json;
@@ -46,6 +40,7 @@ export const loadArticlesByUsername = createAsyncThunk(
   'articles/loadArticlesByUsername', //articles=from slice name: and loadArticlesByAuthor thunk name
   async ({username, page}) => {
     const data = await fetch(`https://dev.to/api/articles?username=${username}&page=${page}`);
+        if (!data.ok) throw new Error(data.statusText); // manually throw on API error (4xx/5xx)
     const json = await data.json();
     //console.log(json); // REMOVE
     return json;
@@ -56,6 +51,7 @@ export const loadArticlesById = createAsyncThunk(
 'articles/loadArticlesById', 
 async (id) => {
 const data = await fetch(`https://dev.to/api/articles/${id}`);
+    if (!data.ok) throw new Error(data.statusText); // manually throw on API error (4xx/5xx)
 const json = await data.json();
 //console.log(json); // REMOVE
 return json;

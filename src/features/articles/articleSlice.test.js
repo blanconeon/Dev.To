@@ -3,6 +3,37 @@ import articlesReducer, { loadArticles, allArticles, selectIsLoading, articlesSl
 
 describe('articlesSlice', () => {
 
+  it("Network Error Test", async ()=> {
+ //muck fetch
+  global.fetch = vi.fn(() => 
+  Promise.reject(new Error('Network error')));
+
+ // run the thunk
+   const dispatch = vi.fn();
+   const getState = vi.fn();
+
+   const result = await loadArticles(1)(dispatch, getState, undefined);  
+   // assert
+   
+    expect(result.type).toBe('articles/loadArticles/rejected');
+  })
+
+  it("API error test", async ()=>{
+   //muck the fetch
+    global.fetch = vi.fn(() =>
+  Promise.resolve({ ok: false, statusText: 'Not Found' })
+);
+// run the thunk
+const dispatch = vi.fn();
+const getState = vi.fn();
+
+const result = await loadArticles(1)(dispatch, getState, undefined);
+
+// assert
+
+expect(result.type).toBe('articles/loadArticles/rejected');
+
+  })
 
   it('sets isLoading to true when articles are loading', () => {
 //arrange 
@@ -104,7 +135,7 @@ it('loadArticles thunk calls the correct API URL and returns articles as payload
     ];
 
     global.fetch = vi.fn(() =>
-      Promise.resolve({
+      Promise.resolve({ok: true,
         json: () => Promise.resolve(fakeArticles),
       })
     );
@@ -128,7 +159,7 @@ it('loadArticles thunk calls the correct API URL and returns articles as payload
     ];
 
     global.fetch = vi.fn(() =>
-      Promise.resolve({
+      Promise.resolve({ok: true,
         json: () => Promise.resolve(fakeTagArticles),
       })
     );
@@ -153,7 +184,7 @@ it('loadArticlesByTopNumber fetches articles from the API', async () => {
     ];
 
     global.fetch = vi.fn(() =>
-      Promise.resolve({
+      Promise.resolve({ok: true,
         json: () => Promise.resolve(fakeTopArticles),
       })
     );
@@ -178,7 +209,7 @@ it('loadArticlesByTopNumber fetches articles from the API', async () => {
     ];
 
     global.fetch = vi.fn(() =>
-      Promise.resolve({
+      Promise.resolve({ok: true,
         json: () => Promise.resolve(fakeUsernameArticles),
       })
     );
@@ -201,7 +232,7 @@ it('loadArticlesByTopNumber fetches articles from the API', async () => {
     const fakeArticle = { body_html: "The results are in!" };
 
    global.fetch = vi.fn(() =>
-      Promise.resolve({
+      Promise.resolve({ok: true,
         json: () => Promise.resolve(fakeArticle),
       })
     );

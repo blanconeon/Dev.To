@@ -9,6 +9,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
    'comments/loadCommentsById', 
    async (id) => {
    const data = await fetch(`https://dev.to/api/comments?a_id=${id}`);
+    if (!data.ok) throw new Error(data.statusText); // manually throw on API error (4xx/5xx)
    const json = await data.json();
    console.log(json); // REMOVE
    return json;
