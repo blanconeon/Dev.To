@@ -136,3 +136,18 @@ npx playwright test --project=chromium              # single browser for faster 
 - Use CSS attribute selectors (`a[href*="?tag="] span`) to target specific elements when multiple similar elements exist
 - Assert on URL (`toHaveURL`) when rendered content is unpredictable (e.g. `dangerouslySetInnerHTML`)
 - Run `--project=chromium` during development, full browser suite for final runs
+
+## Lighthouse scores
+
+Tested against production build (`npm run build` + `npx serve dist`):
+
+| Category | Score |
+|----------|-------|
+| Performance | 100 |
+| Accessibility | 92 |
+| Best Practices | 100 |
+| SEO | 90 |
+
+## Documentation
+
+- `README.md` at root covers: project description, features, tech stack, run commands, testing overview, Lighthouse scores, API endpoints
