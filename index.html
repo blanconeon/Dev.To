@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A dev.to clone — browse articles, tags, and developer profiles." />
     <title>dev-to</title>
   </head>
   <body>
@@ -10,3 +11,16 @@
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
+
+
+<!--
+index.html <div id="root">
+  └── main.jsx — ReactDOM.createRoot().render(<App />)
+        └── App.jsx — RouterProvider with createBrowserRouter
+              └── Root.jsx — layout component (NavBar + Outlet)
+                    ├── NavBar — always visible
+                    └── Outlet — current page renders here
+                          ├── HomePage (route: /)
+                          ├── ArticlePage (route: /articles/:id)
+                          └── ProfilePage (route: /profile/:username)
+-->

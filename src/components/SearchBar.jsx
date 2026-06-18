@@ -40,15 +40,13 @@ return (
     <>
     <div>
      <form onSubmit={handleSubmit}>   
-    <input type="text" name="byTagOrName" value={inputState} onChange={updateTextValue} />
-    <label>
-        <input type="radio" name="nameOrTag" value="tags" onChange={RadioValue}/>
-        Tag
-    </label>
-    <label>
-        <input type="radio" name="nameOrTag" value="name" onChange={RadioValue} />
-        Username 
-    </label>
+    <input type="text" aria-label="Search" name="byTagOrName" value={inputState} onChange={updateTextValue} />
+    <label htmlFor="Tag">Tag</label>   
+        <input type="radio" id="Tag" name="nameOrTag" value="tags" onChange={RadioValue}/>
+        
+    <label htmlFor="Username">Username</label>
+        <input type="radio" id="Username" name="nameOrTag" value="name" onChange={RadioValue} />
+        
     <button type="submit" aria-label="Search">Search</button>
     </form>
     </div>
